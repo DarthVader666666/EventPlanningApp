@@ -13,8 +13,8 @@ const baseFolder =
         : `${env.HOME}/.aspnet/https`;
 
 const certificateName = "eventplanningapp.client";
-const certFilePath = path.join(baseFolder, `${certificateName}.pem`);
-const keyFilePath = path.join(baseFolder, `${certificateName}.key`);
+const certFilePath = `${certificateName}.pem`;// path.join(baseFolder, `${certificateName}.pem`);
+const keyFilePath = `${certificateName}.key`;// path.join(baseFolder, `${certificateName}.key`);
 
 if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
     if (0 !== child_process.spawnSync('dotnet', [
