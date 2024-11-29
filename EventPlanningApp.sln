@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventPlanningApp.Server", "EventPlanningApp.Server\EventPlanningApp.Server.csproj", "{8766B289-E7DC-4050-8782-34D07DFA3B63}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "eventplanningapp.client", "eventplanningapp.client\eventplanningapp.client.esproj", "{DC51B368-DF62-4C26-B888-0C6F6CC54D95}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "eventplanningapp.client", "eventplanningapp.client\eventplanningapp.client.esproj", "{537DE7B0-C05F-41B0-8FA5-27CC9B25FA1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlanning.Api", "EventPlanningApp.Server\EventPlanning.Api\EventPlanning.Api.csproj", "{88495971-5BEB-4D24-AD08-2DE74CCCE3C8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlanning.Bll", "EventPlanningApp.Server\EventPlanning.Bll\EventPlanning.Bll.csproj", "{354152CF-C6E1-4BA9-AB59-84746A7C71EF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlanning.Data", "EventPlanningApp.Server\EventPlanning.Data\EventPlanning.Data.csproj", "{A0149D21-8693-4457-BFBC-9A97C1FAF268}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,21 +17,29 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8766B289-E7DC-4050-8782-34D07DFA3B63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8766B289-E7DC-4050-8782-34D07DFA3B63}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8766B289-E7DC-4050-8782-34D07DFA3B63}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8766B289-E7DC-4050-8782-34D07DFA3B63}.Release|Any CPU.Build.0 = Release|Any CPU
-		{537DE7B0-C05F-41B0-8FA5-27CC9B25FA1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{537DE7B0-C05F-41B0-8FA5-27CC9B25FA1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{537DE7B0-C05F-41B0-8FA5-27CC9B25FA1D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{537DE7B0-C05F-41B0-8FA5-27CC9B25FA1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{537DE7B0-C05F-41B0-8FA5-27CC9B25FA1D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{537DE7B0-C05F-41B0-8FA5-27CC9B25FA1D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{DC51B368-DF62-4C26-B888-0C6F6CC54D95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC51B368-DF62-4C26-B888-0C6F6CC54D95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC51B368-DF62-4C26-B888-0C6F6CC54D95}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{DC51B368-DF62-4C26-B888-0C6F6CC54D95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC51B368-DF62-4C26-B888-0C6F6CC54D95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC51B368-DF62-4C26-B888-0C6F6CC54D95}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{88495971-5BEB-4D24-AD08-2DE74CCCE3C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88495971-5BEB-4D24-AD08-2DE74CCCE3C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88495971-5BEB-4D24-AD08-2DE74CCCE3C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88495971-5BEB-4D24-AD08-2DE74CCCE3C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{354152CF-C6E1-4BA9-AB59-84746A7C71EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{354152CF-C6E1-4BA9-AB59-84746A7C71EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{354152CF-C6E1-4BA9-AB59-84746A7C71EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{354152CF-C6E1-4BA9-AB59-84746A7C71EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0149D21-8693-4457-BFBC-9A97C1FAF268}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0149D21-8693-4457-BFBC-9A97C1FAF268}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0149D21-8693-4457-BFBC-9A97C1FAF268}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0149D21-8693-4457-BFBC-9A97C1FAF268}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {32F61C14-16C9-4342-B6B0-E23D98A9FC72}
+		SolutionGuid = {21138DC0-A2ED-426F-9819-51873ABC989E}
 	EndGlobalSection
 EndGlobal
