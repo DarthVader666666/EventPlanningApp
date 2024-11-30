@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 const useFetch = (url, method, body) => {
-  const requestUrl = 'api/' + url;
+  const requestUrl =  import.meta.env.MODE === 'production' ? 'https://event-planning-app.azurewebsites.net/' : '';
   const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState(null);
@@ -9,7 +9,7 @@ const useFetch = (url, method, body) => {
 
   useEffect(() => {
     const token = sessionStorage.getItem("access_token");
-    fetch(requestUrl, 
+    fetch(requestUrl + 'api/' + url, 
         { 
           method: method ? method : 'GET',
           body: body,
