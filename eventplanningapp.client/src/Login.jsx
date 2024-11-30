@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 
 const LogIn = () => {
-    const serverBaseUrl = import.meta.env === 'development' ? import.meta.env.VITE_BASE_URL : '';
+    const serverBaseUrl = import.meta.env.MODE === 'development' ? import.meta.env.VITE_BASE_URL : '';
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 
 const Register = () => {
-    const serverBaseUrl = import.meta.env === 'development' ? import.meta.env.VITE_BASE_URL : '';
+    const serverBaseUrl = import.meta.env.MODE === 'development' ? import.meta.env.VITE_BASE_URL : '';
     const [firstName, setFirstName] = useState(null);
     const [lastName, setLastName] = useState(null);
     const [email, setEmail] = useState(null);

@@ -3,7 +3,7 @@ import useFetch from "./useFetch.jsx";
 import { useNavigate } from "react-router";
 
 const Create = () => {
-  const serverBaseUrl = import.meta.env === 'development' ? import.meta.env.VITE_BASE_URL : '';
+  const serverBaseUrl = import.meta.env.MODE === 'development' ? import.meta.env.VITE_BASE_URL : '';
   const [title, setTitle] = useState('');
   const [themeId, setThemeId] = useState('');
   const [subThemeId, setSubThemeId] = useState('');

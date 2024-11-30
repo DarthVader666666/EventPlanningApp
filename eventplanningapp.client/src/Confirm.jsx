@@ -4,7 +4,7 @@ import useFetch from "./useFetch.jsx";
 const Confirm = () => {
   const { userId } = useParams();  
   const { eventId } = useParams();
-  const serverBaseUrl = import.meta.env === 'development' ? import.meta.env.VITE_BASE_URL : '';
+  const serverBaseUrl = import.meta.env.MODE === 'development' ? import.meta.env.VITE_BASE_URL : '';
   const navigate = useNavigate();
 
   const email = sessionStorage.getItem('user_name');
