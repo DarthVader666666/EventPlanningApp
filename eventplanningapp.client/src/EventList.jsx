@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 
-const EventList = ({ events }) => {
+const EventList = ( events ) => {
   return (
     <div className="event-list">
-      { events.map((event, index) => (
+      { events == [] ? events.map((event, index) => (
         <div className="event-preview" key={index} >
           <Link to={`/${event.eventId}`}>
             <h2>{ event.title }</h2>
@@ -17,7 +17,7 @@ const EventList = ({ events }) => {
             <div>{ event.participants }</div>
           </Link>
         </div>
-      ))}
+      )) : <h1>Event List Is Empty</h1>}
     </div>
   );
 }

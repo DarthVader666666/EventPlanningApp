@@ -14,7 +14,7 @@ namespace EventPlanning.Api.Controllers
 {
     [EnableCors("AllowClient")]
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class EventsController : ControllerBase
     {
         private readonly IRepository<Event> _eventRepository;

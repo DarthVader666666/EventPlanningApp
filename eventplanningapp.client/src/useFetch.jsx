@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 
 const useFetch = (url, method, body) => {
-  //console.log(url)
-  const serverBaseUrl = import.meta.env.MODE === 'development' ? 'events' : '';
+  const requestUrl = 'api/' + url;
   const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState(null);
@@ -10,8 +9,7 @@ const useFetch = (url, method, body) => {
 
   useEffect(() => {
     const token = sessionStorage.getItem("access_token");
-    console.log(serverBaseUrl)
-    fetch(serverBaseUrl, 
+    fetch(requestUrl, 
         { 
           method: method ? method : 'GET',
           body: body,
@@ -42,7 +40,6 @@ const useFetch = (url, method, body) => {
           setError(null);
         })
         .catch(err => {
-          //console.log(err + err.name)
           if (err.name === 'AbortError') {
             console.log('fetch aborted')
           }
@@ -53,7 +50,7 @@ const useFetch = (url, method, body) => {
           }
         })
       },
-   [serverBaseUrl + url,method,body])
+   [requestUrl + url,method,body])
 
   return { data, isPending, error, status };
 }
