@@ -39,6 +39,7 @@ namespace EventPlanning.Api.Controllers
         //[Route("/")]
         public async Task<IActionResult> Index()
         {
+            return Ok(Enumerable.Empty<Event>());
             var events = await _eventRepository.GetListAsync();
             var mappedEvents = _mapper.Map<IEnumerable<Event>, IEnumerable<EventIndexModel>>(events);
             return Ok(mappedEvents);
