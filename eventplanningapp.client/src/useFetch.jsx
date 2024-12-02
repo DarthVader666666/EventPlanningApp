@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 const useFetch = (url, method, body) => {
-  const requestUrl =  'https://event-planning-app.azurewebsites.net/';//import.meta.env.MODE === 'Production' ? 'https://event-planning-app.azurewebsites.net/' : '';
+  const requestUrl =  import.meta.env.MODE === 'production' ? 'https://event-planning-app.azurewebsites.net/' : 'https://localhost:7198/';
   const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState(null);
@@ -9,7 +9,7 @@ const useFetch = (url, method, body) => {
 
   useEffect(() => {
     const token = sessionStorage.getItem("access_token");
-    fetch(requestUrl + 'api/' + url, 
+    fetch(requestUrl + url, 
         { 
           method: method ? method : 'GET',
           body: body,
@@ -29,7 +29,7 @@ const useFetch = (url, method, body) => {
           }
 
           if (!res.ok) { // error coming back from server
-            throw Error('could not fetch the data for that resource');
+            throw Error(res.statusText + ': could not fetch the data for that resource');
           }
 
           return res.json();

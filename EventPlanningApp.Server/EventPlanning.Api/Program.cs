@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddCors(opts => opts.AddPolicy("AllowClient", policy =>
-policy.WithOrigins($"{builder.Configuration["ClientUrl"]}")
+policy.WithOrigins(builder.Configuration["ClientUrl"] ?? string.Empty)
     .AllowAnyHeader()
     .AllowAnyMethod()
     ));
