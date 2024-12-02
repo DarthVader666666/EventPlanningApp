@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 const useFetch = (url, method, body) => {
-  const requestUrl =  import.meta.env.MODE === 'production' ? 'https://event-planning-app.azurewebsites.net/' : '';
+  const requestUrl =  'https://event-planning-app.azurewebsites.net/';//import.meta.env.MODE === 'Production' ? 'https://event-planning-app.azurewebsites.net/' : '';
   const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState(null);

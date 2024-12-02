@@ -19,6 +19,7 @@ const Navbar = () => {
     <nav className="navbar">
       <h1>The Best Event Planning App</h1>
       <h3>{import.meta.env.MODE}</h3>
+      <h3>{import.meta.env.url}</h3>
       <div className="links">
         <Link to="/">Home</Link>
         {
