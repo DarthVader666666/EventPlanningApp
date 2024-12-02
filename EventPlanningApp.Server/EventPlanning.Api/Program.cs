@@ -20,7 +20,7 @@ policy.WithOrigins(builder.Configuration["ClientUrl"] ?? string.Empty)
     .AllowAnyMethod()
     ));
 
-builder.Services.AddAuthentication("Test").AddJwtBearer(options =>
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -70,7 +70,7 @@ await MigrateSeedDatabase(scope);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.UseCors();
+app.UseCors("AllowClient");
 
 app.UseHttpsRedirection();
 

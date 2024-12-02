@@ -24,7 +24,7 @@ const Navbar = () => {
         <Link to="/">Home</Link>
         {
           name &&
-          <Link to="/create" className="create-button">New Event</Link>
+          <Link to="events/create" className="create-button">New Event</Link>
         }
         <Link to="/login/">{name ? name : "Log In"}</Link>
         <Link to="/register/">Register</Link>

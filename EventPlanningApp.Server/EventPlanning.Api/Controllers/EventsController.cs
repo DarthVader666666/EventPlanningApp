@@ -36,6 +36,7 @@ namespace EventPlanning.Api.Controllers
         }
 
         [HttpGet]
+        //[Route("/")]
         public async Task<IActionResult> Index()
         {
             var events = await _eventRepository.GetListAsync();
@@ -44,7 +45,7 @@ namespace EventPlanning.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{eventId:int}")]
+        [Route("[controller]/{eventId:int}")]
         public async Task<EventIndexModel> GetEvent([FromRoute] int? eventId)
         {
             var eventEntity = await _eventRepository.GetAsync(eventId);
@@ -53,9 +54,8 @@ namespace EventPlanning.Api.Controllers
             return mappedEvent;
         }
 
-
         [HttpPost]
-        [Route("create")]
+        [Route("[controller]/create")]
         [Authorize(Roles = "Admin")]
         //[RequiresClaim("Admin", "true")]
         public async Task<IActionResult> Create(EventCreateModel model)
