@@ -83,7 +83,7 @@ app.MapControllers();
 //app.MapPost("events", () => Results.Ok())
 //    .RequireAuthorization("Admin");
 
-//app.MapFallbackToFile("/index.html");
+app.MapFallbackToFile("/index.html");
 
 app.Run();
 
