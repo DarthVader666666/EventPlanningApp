@@ -5,7 +5,7 @@ VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "reactapp1.client", "reactapp1.client\reactapp1.client.esproj", "{F32928E6-0AB3-4989-9EE3-2878B2291E41}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlanning.Api", "ReactApp1.Server\EventPlanning.Api\EventPlanning.Api.csproj", "{3340EEDE-9670-49D0-AEA9-6CA1A094D034}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlanning.Api", "ReactApp1.Server\EventPlanning.Api.csproj", "{7264EC1A-2F24-4631-8EF7-ED087E695009}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +19,10 @@ Global
 		{F32928E6-0AB3-4989-9EE3-2878B2291E41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F32928E6-0AB3-4989-9EE3-2878B2291E41}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F32928E6-0AB3-4989-9EE3-2878B2291E41}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{3340EEDE-9670-49D0-AEA9-6CA1A094D034}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3340EEDE-9670-49D0-AEA9-6CA1A094D034}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3340EEDE-9670-49D0-AEA9-6CA1A094D034}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3340EEDE-9670-49D0-AEA9-6CA1A094D034}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7264EC1A-2F24-4631-8EF7-ED087E695009}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7264EC1A-2F24-4631-8EF7-ED087E695009}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7264EC1A-2F24-4631-8EF7-ED087E695009}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7264EC1A-2F24-4631-8EF7-ED087E695009}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
