@@ -5,11 +5,11 @@ VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "reactapp1.client", "reactapp1.client\reactapp1.client.esproj", "{F32928E6-0AB3-4989-9EE3-2878B2291E41}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlanning.Api", "..\EventPlanningApp\EventPlanningApp.Server\EventPlanning.Api\EventPlanning.Api.csproj", "{FB5F0C0E-94B2-40AE-86BF-93D109C1A6E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlanning.Api", "ReactApp1.Server\EventPlanning.Api\EventPlanning.Api.csproj", "{3340EEDE-9670-49D0-AEA9-6CA1A094D034}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlanning.Bll", "..\EventPlanningApp\EventPlanningApp.Server\EventPlanning.Bll\EventPlanning.Bll.csproj", "{0EA3D379-DEBE-4248-85E4-618B4C56F400}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlanning.Bll", "ReactApp1.Server\EventPlanning.Bll\EventPlanning.Bll.csproj", "{B8B66ADF-F19F-4157-92C8-561293AC4E24}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlanning.Data", "..\EventPlanningApp\EventPlanningApp.Server\EventPlanning.Data\EventPlanning.Data.csproj", "{2C03756A-8A05-41AE-B941-2B8E9FAB22ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlanning.Data", "ReactApp1.Server\EventPlanning.Data\EventPlanning.Data.csproj", "{50516C9A-9B93-4AE4-8328-78F9770365E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,18 +23,18 @@ Global
 		{F32928E6-0AB3-4989-9EE3-2878B2291E41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F32928E6-0AB3-4989-9EE3-2878B2291E41}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F32928E6-0AB3-4989-9EE3-2878B2291E41}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{FB5F0C0E-94B2-40AE-86BF-93D109C1A6E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB5F0C0E-94B2-40AE-86BF-93D109C1A6E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB5F0C0E-94B2-40AE-86BF-93D109C1A6E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB5F0C0E-94B2-40AE-86BF-93D109C1A6E4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0EA3D379-DEBE-4248-85E4-618B4C56F400}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0EA3D379-DEBE-4248-85E4-618B4C56F400}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0EA3D379-DEBE-4248-85E4-618B4C56F400}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0EA3D379-DEBE-4248-85E4-618B4C56F400}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2C03756A-8A05-41AE-B941-2B8E9FAB22ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2C03756A-8A05-41AE-B941-2B8E9FAB22ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2C03756A-8A05-41AE-B941-2B8E9FAB22ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2C03756A-8A05-41AE-B941-2B8E9FAB22ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3340EEDE-9670-49D0-AEA9-6CA1A094D034}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3340EEDE-9670-49D0-AEA9-6CA1A094D034}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3340EEDE-9670-49D0-AEA9-6CA1A094D034}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3340EEDE-9670-49D0-AEA9-6CA1A094D034}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8B66ADF-F19F-4157-92C8-561293AC4E24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8B66ADF-F19F-4157-92C8-561293AC4E24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8B66ADF-F19F-4157-92C8-561293AC4E24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8B66ADF-F19F-4157-92C8-561293AC4E24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50516C9A-9B93-4AE4-8328-78F9770365E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50516C9A-9B93-4AE4-8328-78F9770365E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50516C9A-9B93-4AE4-8328-78F9770365E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50516C9A-9B93-4AE4-8328-78F9770365E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
