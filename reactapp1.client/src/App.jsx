@@ -1,31 +1,55 @@
 import Home from './Home.jsx';
 import Navbar from './Navbar.jsx';
+import useFetch from "./useFetch.jsx";
+import { Link } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 /*import Create from './Create.jsx';
 import LogIn from './Login.jsx';
 import Register from './Register.jsx';
 import EventDetails from './EventDetails.jsx';
 import Confirm from './Confirm.jsx'; */
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+//import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
-  const basePath =  (import.meta.env.MODE === 'development' ? '' : 'https://event-planning-app.azurewebsites.net');
+  //const basePath =  (import.meta.env.MODE === 'development' ? '' : 'https://event-planning-app.azurewebsites.net');
+  const { error, isPending, data: events } = useFetch('events');
+//   const jwtToken = sessionStorage.getItem("access_token");
 
-  return (
-    <Router>
-      <div className="App">
-        <Navbar />
-        <div className="content">
-          <Routes>
-            <Route path="/" element={<Home/>}></Route>
-{/*         <Route path={basePath + "/events/create"} element={<Create/>}></Route>
-            <Route path={basePath + "/login/"} element={<LogIn/>}></Route>
-            <Route path={basePath + "/register/"} element={<Register/>}></Route>
-            <Route path={basePath + "/events/:eventId"} element={<EventDetails />}></Route>
-            <Route path={basePath + "/confirm/:userId/:eventId"} element={<Confirm />}></Route> */}
-          </Routes>
-        </div>
-      </div>
-    </Router>
+//   if(jwtToken)
+//   {
+//     const token = jwtDecode(jwtToken);
+    
+//     if (token.exp * 1000 < new Date().getTime()) {
+//       sessionStorage.clear();
+//     }
+//   }
+
+  const name = sessionStorage.getItem("user_name");
+
+  return (    
+    <BrowserRouter>
+        <div className="home">
+        <nav className="navbar">
+            <h1>The Best Event Planning App</h1>
+            <h3>{import.meta.env.MODE}</h3>
+            <h3>{import.meta.env.url}</h3>
+                <div className="links">
+                    <Link to="/">Home</Link>
+                    {
+                      name &&
+                      <Link to="events/create" className="create-button">New Event</Link>
+                    }
+                    <Link to="/login/">{name ? name : "Log In"}</Link>
+                    <Link to="/register/">Register</Link>
+                </div>
+        </nav>
+        { error && <div>{ error }</div> }
+        { isPending && <div>Loading...</div> }
+        {/* { events && <EventList events={(events)} /> } */}
+    </div>
+    </BrowserRouter>
+    
   );
 }
 
