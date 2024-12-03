@@ -1,54 +1,49 @@
-import Home from './Home.jsx';
-import Navbar from './Navbar.jsx';
-import useFetch from "./useFetch.jsx";
-//import { button } from "react-router-dom";
-import { BrowserRouter } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-/*import Create from './Create.jsx';
-import LogIn from './Login.jsx';
-import Register from './Register.jsx';
-import EventDetails from './EventDetails.jsx';
-import Confirm from './Confirm.jsx'; */
-//import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import './App.css';
 
 function App() {
-  //const basePath =  (import.meta.env.MODE === 'development' ? '' : 'https://event-planning-app.azurewebsites.net');
-  const { error, isPending, data: events } = useFetch('events');
-//   const jwtToken = sessionStorage.getItem("access_token");
+    const [forecasts, setForecasts] = useState();
 
-//   if(jwtToken)
-//   {
-//     const token = jwtDecode(jwtToken);
+    useEffect(() => {
+        populateWeatherData();
+    }, []);
+
+    const contents = forecasts === undefined
+        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
+        : <table className="table table-striped" aria-labelledby="tableLabel">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Temp. (C)</th>
+                    <th>Temp. (F)</th>
+                    <th>Summary</th>
+                </tr>
+            </thead>
+            <tbody>
+                {forecasts.map(forecast =>
+                    <tr key={forecast.date}>
+                        <td>{forecast.date}</td>
+                        <td>{forecast.temperatureC}</td>
+                        <td>{forecast.temperatureF}</td>
+                        <td>{forecast.summary}</td>
+                    </tr>
+                )}
+            </tbody>
+        </table>;
+
+    return (
+        <div>
+            <h1 id="tableLabel">Weather forecast</h1>
+            <p>This component demonstrates fetching data from the server.</p>
+            {contents}
+        </div>
+    );
     
-//     if (token.exp * 1000 < new Date().getTime()) {
-//       sessionStorage.clear();
-//     }
-//   }
-
-  const name = sessionStorage.getItem("user_name");
-
-  return (    
-    <div className="home">
-        <nav className="navbar">
-            <h1>The Best Event Planning App</h1>
-            <h3>{import.meta.env.MODE}</h3>
-            <h3>{import.meta.env.url}</h3>
-                <div className="links">
-                    <button to="/">Home</button>
-                    {
-                      name &&
-                      <button className="create-button">New Event</button>
-                    }
-                    <button>{name ? name : "Log In"}</button>
-                    <button>Register</button>
-                </div>
-        </nav>
-        { error && <div>{ error }</div> }
-        { isPending && <div>Loading...</div> }
-        {/* { events && <EventList events={(events)} /> } */}
-    </div>
-    
-  );
+    async function populateWeatherData() {
+        const response = await fetch('weatherforecast');
+        const data = await response.json();
+        setForecasts(data);
+    }
 }
 
 export default App;
