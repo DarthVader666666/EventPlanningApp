@@ -16,7 +16,7 @@ function App() {
         <Navbar />
         <div className="content">
           <Routes>
-            <Route path={basePath + "/"} element={<Home/>}></Route>
+            <Route path="/" element={<Home/>}></Route>
 {/*         <Route path={basePath + "/events/create"} element={<Create/>}></Route>
             <Route path={basePath + "/login/"} element={<LogIn/>}></Route>
             <Route path={basePath + "/register/"} element={<Register/>}></Route>
