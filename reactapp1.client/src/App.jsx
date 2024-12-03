@@ -1,7 +1,7 @@
 import Home from './Home.jsx';
 import Navbar from './Navbar.jsx';
 import useFetch from "./useFetch.jsx";
-import { Link } from "react-router-dom";
+//import { button } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 /*import Create from './Create.jsx';
@@ -28,27 +28,25 @@ function App() {
   const name = sessionStorage.getItem("user_name");
 
   return (    
-    <BrowserRouter>
-        <div className="home">
+    <div className="home">
         <nav className="navbar">
             <h1>The Best Event Planning App</h1>
             <h3>{import.meta.env.MODE}</h3>
             <h3>{import.meta.env.url}</h3>
                 <div className="links">
-                    <Link to="/">Home</Link>
+                    <button to="/">Home</button>
                     {
                       name &&
-                      <Link to="events/create" className="create-button">New Event</Link>
+                      <button className="create-button">New Event</button>
                     }
-                    <Link to="/login/">{name ? name : "Log In"}</Link>
-                    <Link to="/register/">Register</Link>
+                    <button>{name ? name : "Log In"}</button>
+                    <button>Register</button>
                 </div>
         </nav>
         { error && <div>{ error }</div> }
         { isPending && <div>Loading...</div> }
         {/* { events && <EventList events={(events)} /> } */}
     </div>
-    </BrowserRouter>
     
   );
 }
