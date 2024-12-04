@@ -1,3 +1,4 @@
+using EventPlanning.Bll;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ReactApp1.Server.Controllers
@@ -6,14 +7,17 @@ namespace ReactApp1.Server.Controllers
     [Route("[controller]")]
     public class EventsController : ControllerBase
     {
-        public EventsController()
+        private readonly BllService _bllService;
+
+        public EventsController(BllService bllService)
         {
+            _bllService = bllService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return Ok(Enumerable.Empty<object>());
+            return Ok(_bllService.GetGreeting());
         }
     }
 }
