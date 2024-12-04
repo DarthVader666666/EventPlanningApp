@@ -20,6 +20,18 @@ function App() {
                 </div>
             </div>    
         </Router>
+
+/* <Router>
+<div className="App">
+    <Navbar/>
+    <div className="content">
+        <Routes>
+            <Route path="/" element={<Home/>}></Route>
+            <Route path="/authorization/login" element={<LogIn/>}></Route>
+        </Routes>
+    </div>
+</div>    
+</Router> */
   );
 }
 
