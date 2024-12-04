@@ -5,7 +5,10 @@ import Navbar from './Navbar.jsx';
 //import Register from './Register.jsx';
 //import EventDetails from './EventDetails.jsx';
 //import Confirm from './Confirm.jsx';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {
+    BrowserRouter as Router,
+    Route
+  } from 'react-router-dom';
 
 function App() {
     return (
