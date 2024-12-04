@@ -20,7 +20,7 @@ policy.WithOrigins(builder.Configuration["ClientUrl"] ?? string.Empty)
     .AllowAnyMethod()
     ));
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+builder.Services.AddAuthentication("JwtBearerDefaults.AuthenticationScheme").AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
