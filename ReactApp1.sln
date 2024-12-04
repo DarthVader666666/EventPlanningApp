@@ -7,10 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactApp1.Server", "ReactAp
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "reactapp1.client", "reactapp1.client\reactapp1.client.esproj", "{EFF55816-6794-4956-A06C-6DA04F44396D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventPlanning.Data", "EventPlanning.Data\EventPlanning.Data.csproj", "{69165508-28D2-4148-8E91-3F50877FBB30}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventPlanning.Bll", "EventPlanning.Bll\EventPlanning.Bll.csproj", "{0BDC0753-1A31-4AF6-AB14-61CA5AB841B4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,14 +23,6 @@ Global
 		{EFF55816-6794-4956-A06C-6DA04F44396D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFF55816-6794-4956-A06C-6DA04F44396D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EFF55816-6794-4956-A06C-6DA04F44396D}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{69165508-28D2-4148-8E91-3F50877FBB30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{69165508-28D2-4148-8E91-3F50877FBB30}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{69165508-28D2-4148-8E91-3F50877FBB30}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{69165508-28D2-4148-8E91-3F50877FBB30}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0BDC0753-1A31-4AF6-AB14-61CA5AB841B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0BDC0753-1A31-4AF6-AB14-61CA5AB841B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0BDC0753-1A31-4AF6-AB14-61CA5AB841B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0BDC0753-1A31-4AF6-AB14-61CA5AB841B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
