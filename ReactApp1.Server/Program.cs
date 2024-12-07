@@ -9,6 +9,7 @@ using System.Text;
 using EventPlanning.Data;
 using EventPlanning.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using EventPlanning.Server.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,11 +32,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
-var connectionString = builder.Configuration.GetConnectionString("EventDb");
-builder.Services.AddDbContext<EventPlanningDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.ConfigureAutomapper();
 
 if (builder.Environment.IsDevelopment())
 {
+    var connectionString = builder.Configuration.GetConnectionString("EventDb");
+    builder.Services.AddDbContext<EventPlanningDbContext>(options => options.UseSqlServer(connectionString));
+
     builder.Services.AddScoped<IRepository<Event>, EventRepository>();
     builder.Services.AddScoped<IRepository<UserEvent>, UserEventRepository>();
     builder.Services.AddScoped<IRepository<User>, UserRepository>();
