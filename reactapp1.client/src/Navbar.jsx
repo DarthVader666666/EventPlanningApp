@@ -21,12 +21,12 @@ const Navbar = () => {
       <h3>{import.meta.env.MODE}</h3>
       <h3>{import.meta.env.url}</h3>
       <div className="links">
-        <Link to="/">Home</Link>
+        <Link to="/events">Home</Link>
         {
           name &&
           <Link to="events/create" className="create-button">New Event</Link>
         }
-        <Link to="authorization/login/">{name ? name : "Log In"}</Link>
+        <Link to="/login">{name ? name : "Log In"}</Link>
         <Link to="/register/">Register</Link>
       </div>
     </nav>

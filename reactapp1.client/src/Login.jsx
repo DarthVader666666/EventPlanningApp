@@ -18,12 +18,13 @@ const LogIn = () => {
         }
         else
         {
-            await fetch('authorization/login/',
+            await fetch('api/authorization/login',
                 {
                     body: JSON.stringify({ email, password }),
                     headers:
                     {
-                      "Content-Type": "application/json"
+                        "Accept": "application/json",
+                        "Content-Type": "application/json",
                     },
                     method: "POST"
                 })

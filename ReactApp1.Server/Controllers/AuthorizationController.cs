@@ -14,7 +14,6 @@ namespace EventPlanning.Api.Controllers
 {
     [EnableCors("AllowClient")]
     [ApiController]
-    [Route("[controller]")]
     public class AuthorizationController : ControllerBase
     {
         //private readonly IRepository<User> _userRepository;
@@ -33,8 +32,8 @@ namespace EventPlanning.Api.Controllers
         }
 
         [HttpPost]
-        //[Route("[controller]/login")]
-        public async Task<IActionResult> LogIn([FromBody]UserLogInModel userLogIn)
+        [Route("api/[controller]/[action]")]
+        public async Task<IActionResult> Login([FromBody] UserLogInModel userLoginModel)
         {
             //var identity = await GetIdentity(userLogIn);
 
@@ -62,55 +61,56 @@ namespace EventPlanning.Api.Controllers
             //    role = identity.RoleClaimType
             //};
 
-            return Ok(JsonConvert.SerializeObject(userLogIn));
+            //return Ok(JsonConvert.SerializeObject(userLogIn));
+            return Ok("Login Post Woked");
         }
 
-        //[HttpPost]
-        //[Route("register")]
-        //public async Task<IActionResult> Register(UserRegisterModel userRegister)
-        //{
-        //    if (await DoesUserExist(userRegister?.Email))
-        //    {
-        //        return BadRequest(new { errorText = "User with this email already exists." });
-        //    }
+            //[HttpPost]
+            //[Route("register")]
+            //public async Task<IActionResult> Register(UserRegisterModel userRegister)
+            //{
+            //    if (await DoesUserExist(userRegister?.Email))
+            //    {
+            //        return BadRequest(new { errorText = "User with this email already exists." });
+            //    }
 
-        //    var user = _mapper.Map<UserRegisterModel, User>(userRegister);
-        //    user = await _userRepository.CreateAsync(user);
+            //    var user = _mapper.Map<UserRegisterModel, User>(userRegister);
+            //    user = await _userRepository.CreateAsync(user);
 
-        //    if (user == null)
-        //    {
-        //        return BadRequest(new { errorText = "Error while creating user." });
-        //    }
+            //    if (user == null)
+            //    {
+            //        return BadRequest(new { errorText = "Error while creating user." });
+            //    }
 
-        //    return await LogIn(new UserLogInModel { Email = user.Email, Password = user.Password });
-        //}
+            //    return await LogIn(new UserLogInModel { Email = user.Email, Password = user.Password });
+            //}
 
-        //private async Task<ClaimsIdentity?> GetIdentity(UserLogInModel userLogIn)
-        //{
-        //    var user = await _userRepository.GetAsync(userLogIn.Email);
+            //private async Task<ClaimsIdentity?> GetIdentity(UserLogInModel userLogIn)
+            //{
+            //    var user = await _userRepository.GetAsync(userLogIn.Email);
 
-        //    if (user != null)
-        //    {
-        //        var roles = await _roleRepository.GetListAsync(user.UserId);
-        //        var roleType = string.Join(", ", roles.Select(x => x?.RoleName));
+            //    if (user != null)
+            //    {
+            //        var roles = await _roleRepository.GetListAsync(user.UserId);
+            //        var roleType = string.Join(", ", roles.Select(x => x?.RoleName));
 
-        //        var claims = new List<Claim>
-        //        {
-        //            new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email ?? "Anonymus"),
-        //            new Claim(ClaimsIdentity.DefaultRoleClaimType, roleType)
-        //        };
+            //        var claims = new List<Claim>
+            //        {
+            //            new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email ?? "Anonymus"),
+            //            new Claim(ClaimsIdentity.DefaultRoleClaimType, roleType)
+            //        };
 
-        //        ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, roleType);
+            //        ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, roleType);
 
-        //        return claimsIdentity;
-        //    }
+            //        return claimsIdentity;
+            //    }
 
-        //    return null;
-        //}
+            //    return null;
+            //}
 
-        //private async Task<bool> DoesUserExist(string? email)
-        //{
-        //    return await _userRepository.GetAsync(email) != null;
-        //}
-    }
+            //private async Task<bool> DoesUserExist(string? email)
+            //{
+            //    return await _userRepository.GetAsync(email) != null;
+            //}
+        }
 }

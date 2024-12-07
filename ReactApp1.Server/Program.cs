@@ -1,6 +1,7 @@
 using EventPlanning.Bll;
 using EventPlanning.Bll.Services.SqlRepositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -12,6 +13,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddCors(opts => opts.AddPolicy("AllowClient", policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
@@ -32,6 +35,8 @@ builder.Services.AddScoped<EventRepository>();
 
 var app = builder.Build();
 
+app.UseCors("AllowClient");
+
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
@@ -46,7 +51,11 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+//app.MapControllers();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "api/{controller}/{action}/{id?}"
+    );
 
 app.MapFallbackToFile("/index.html");
 
