@@ -1,19 +1,20 @@
-using EventPlanning.Bll;
+using EventPlanning.Bll.Interfaces;
+using EventPlanning.Bll.Services.JsonRepositories;
+using EventPlanning.Bll.Services;
 using EventPlanning.Bll.Services.SqlRepositories;
+using JsonFlatFileDataStore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using EventPlanning.Data;
+using EventPlanning.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 builder.Services.AddCors(opts => opts.AddPolicy("AllowClient", policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -30,8 +31,30 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
-builder.Services.AddScoped<BllService>();
-builder.Services.AddScoped<EventRepository>();
+var connectionString = builder.Configuration.GetConnectionString("EventDb");
+builder.Services.AddDbContext<EventPlanningDbContext>(options => options.UseSqlServer(connectionString));
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddScoped<IRepository<Event>, EventRepository>();
+    builder.Services.AddScoped<IRepository<UserEvent>, UserEventRepository>();
+    builder.Services.AddScoped<IRepository<User>, UserRepository>();
+    builder.Services.AddScoped<IRepository<Role>, RoleRepository>();
+    builder.Services.AddScoped<IRepository<Theme>, ThemeRepository>();
+}
+else
+{
+    var path = $"{Directory.GetCurrentDirectory()}\\eventDb.json";
+
+    builder.Services.AddScoped<IRepository<Event>, EventJsonRepository>();
+    builder.Services.AddScoped<IRepository<UserEvent>, UserEventJsonRepository>();
+    builder.Services.AddScoped<IRepository<User>, UserJsonRepository>();
+    builder.Services.AddScoped<IRepository<Role>, RoleJsonRepository>();
+    builder.Services.AddScoped<IRepository<Theme>, ThemeJsonRepository>();
+    builder.Services.AddScoped(serviceProvider => new DataStore(path, useLowerCamelCase: false));
+}
+
+builder.Services.AddScoped<EmailSender>();
 
 var app = builder.Build();
 
@@ -40,18 +63,10 @@ app.UseCors("AllowClient");
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-//app.MapControllers();
 app.MapControllerRoute(
     name: "default",
     pattern: "api/{controller}/{action}/{id?}"

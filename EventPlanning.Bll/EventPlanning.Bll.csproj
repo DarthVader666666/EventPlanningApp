@@ -14,4 +14,8 @@
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.2.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EventPlanning.Data\EventPlanning.Data.csproj" />
+  </ItemGroup>
+
 </Project>

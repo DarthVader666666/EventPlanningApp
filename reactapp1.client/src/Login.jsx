@@ -33,7 +33,7 @@ const LogIn = () => {
                     if(response.status === 400)
                     {
                         alert("Incorrect credentials");
-                        navigate("/login/");
+                        navigate("/login");
                     }
                     else
                     {

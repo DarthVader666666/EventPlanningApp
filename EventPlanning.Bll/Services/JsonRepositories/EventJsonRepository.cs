@@ -1,80 +1,79 @@
 ﻿using EventPlanning.Bll.Interfaces;
-//using EventPlanning.Data.Entities;
+using EventPlanning.Data.Entities;
 using JsonFlatFileDataStore;
-using Microsoft.IdentityModel.Tokens;
 
 namespace EventPlanning.Bll.Services.JsonRepositories
 {
-    public class EventJsonRepository// : IRepository<Event>
+    public class EventJsonRepository : IRepository<Event>
     {
-        //private readonly IDocumentCollection<Event> _eventCollection;
-        //private readonly IDocumentCollection<Theme> _themeCollection;
-        //private readonly IDocumentCollection<SubTheme> _subThemeCollection;
-        //private int nextEventId;
+        private readonly IDocumentCollection<Event> _eventCollection;
+        private readonly IDocumentCollection<Theme> _themeCollection;
+        private readonly IDocumentCollection<SubTheme> _subThemeCollection;
+        private int nextEventId;
 
-        //public EventJsonRepository(DataStore dataStore)
-        //{
-        //    _eventCollection = dataStore.GetCollection<Event>();
-        //    _themeCollection = dataStore.GetCollection<Theme>();
-        //    _subThemeCollection = dataStore.GetCollection<SubTheme>();
-        //    var collection = _eventCollection.AsQueryable();
-        //    nextEventId = collection.IsNullOrEmpty() ? 1 : collection.Max(x => x.EventId) + 1;
-        //}
+        public EventJsonRepository(DataStore dataStore)
+        {
+            _eventCollection = dataStore.GetCollection<Event>();
+            _themeCollection = dataStore.GetCollection<Theme>();
+            _subThemeCollection = dataStore.GetCollection<SubTheme>();
+            var collection = _eventCollection.AsQueryable();
+            nextEventId = collection.Any() ? 1 : collection.Max(x => x.EventId) + 1;
+        }
 
-        //public async Task<Event?> CreateAsync(Event item)
-        //{
-        //    item.EventId = nextEventId++;
-        //    var result = await _eventCollection.InsertOneAsync(item);
-        //    return result ? item : null;
-        //}
+        public async Task<Event?> CreateAsync(Event item)
+        {
+            item.EventId = nextEventId++;
+            var result = await _eventCollection.InsertOneAsync(item);
+            return result ? item : null;
+        }
 
-        //public Task<Event?> DeleteAsync(object? id)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public Task<Event?> DeleteAsync(object? id)
+        {
+            throw new NotImplementedException();
+        }
 
-        //public Task<bool> ExistsAsync(Event item)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public Task<bool> ExistsAsync(Event item)
+        {
+            throw new NotImplementedException();
+        }
 
-        //public async Task<Event?> GetAsync(object? id)
-        //{
-        //    var eventItem = _eventCollection.AsQueryable().FirstOrDefault(x => x.EventId == (int?)id);
-        //    var theme = _themeCollection.AsQueryable().FirstOrDefault(x => x.ThemeId == eventItem?.ThemeId);
-        //    var subTheme = _subThemeCollection.AsQueryable().FirstOrDefault(x => x.ThemeId == theme?.ThemeId);
+        public async Task<Event?> GetAsync(object? id)
+        {
+            var eventItem = _eventCollection.AsQueryable().FirstOrDefault(x => x.EventId == (int?)id);
+            var theme = _themeCollection.AsQueryable().FirstOrDefault(x => x.ThemeId == eventItem?.ThemeId);
+            var subTheme = _subThemeCollection.AsQueryable().FirstOrDefault(x => x.ThemeId == theme?.ThemeId);
 
-        //    eventItem.Theme = theme;
-        //    eventItem.SubTheme = subTheme;
+            eventItem.Theme = theme;
+            eventItem.SubTheme = subTheme;
 
-        //    return eventItem;
-        //}
+            return eventItem;
+        }
 
-        //public async Task<IEnumerable<Event?>> GetListAsync(object? id)
-        //{
-        //    var events = _eventCollection.AsQueryable().Select(e => 
-        //    {
-        //        var theme = _themeCollection.AsQueryable().FirstOrDefault(t => t.ThemeId == e.ThemeId);
-        //        var subTheme = _subThemeCollection.AsQueryable().FirstOrDefault(s => e.SubThemeId == s.SubThemeId);
-        //        e.Theme = theme;
-        //        e.SubTheme = subTheme;
-                
-        //        return e;
-        //    });
+        public async Task<IEnumerable<Event?>> GetListAsync(object? id)
+        {
+            var events = _eventCollection.AsQueryable().Select(e =>
+            {
+                var theme = _themeCollection.AsQueryable().FirstOrDefault(t => t.ThemeId == e.ThemeId);
+                var subTheme = _subThemeCollection.AsQueryable().FirstOrDefault(s => e.SubThemeId == s.SubThemeId);
+                e.Theme = theme;
+                e.SubTheme = subTheme;
 
-        //    return events;
-        //}
+                return e;
+            });
 
-        //public async Task<Event?> UpdateAsync(Event item)
-        //{
-        //    if (item == null)
-        //    {
-        //        return null;
-        //    }
+            return events;
+        }
 
-        //    await _eventCollection.UpdateOneAsync(e => e.EventId == item.EventId, item);
+        public async Task<Event?> UpdateAsync(Event item)
+        {
+            if (item == null)
+            {
+                return null;
+            }
 
-        //    return item;
-        //}
+            await _eventCollection.UpdateOneAsync(e => e.EventId == item.EventId, item);
+
+            return item;
+        }
     }
 }

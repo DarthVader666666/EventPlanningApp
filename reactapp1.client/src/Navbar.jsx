@@ -6,7 +6,7 @@ const Navbar = () => {
 
   if(jwtToken)
   {
-    const token = jwtDecode(jwtToken);
+    const token = jwtToken || jwtDecode(jwtToken);
     
     if (token.exp * 1000 < new Date().getTime()) {
       sessionStorage.clear();
