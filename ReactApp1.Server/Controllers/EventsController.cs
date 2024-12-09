@@ -3,6 +3,7 @@ using Azure.Communication.Email;
 using EventPlanning.Api.Models;
 using EventPlanning.Bll.Interfaces;
 using EventPlanning.Bll.Services;
+using EventPlanning.Bll.Services.JsonRepositories;
 using EventPlanning.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -15,20 +16,27 @@ namespace ReactApp1.Server.Controllers
     [EnableCors("AllowClient")]
     public class EventsController : ControllerBase
     {
-        private readonly IRepository<Event> _eventRepository;
-        private readonly IRepository<User> _userRepository;
-        private readonly IRepository<UserEvent> _userEventRepository;
-        private readonly EmailSender _emailSender;
+        //private readonly IRepository<Event> _eventRepository;
+        //private readonly IRepository<User> _userRepository;
+        //private readonly IRepository<UserEvent> _userEventRepository;
+        //private readonly EmailSender _emailSender;
+
+        private readonly EventJsonRepository _eventRepository;
+        private readonly UserJsonRepository _userRepository;
+        private readonly UserEventJsonRepository _userEventRepository;
+
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
 
-        public EventsController(IMapper mapper, IRepository<Event> eventRepository, IRepository<User> userRepository,
-            IRepository<UserEvent> userEventRepository, EmailSender emailSender, IConfiguration configuration)
+        public EventsController(IMapper mapper, 
+            EventJsonRepository eventRepository, 
+            UserJsonRepository userRepository,
+            UserEventJsonRepository userEventRepository, 
+            IConfiguration configuration)
         {
             _eventRepository = eventRepository;
             _userRepository = userRepository;
             _userEventRepository = userEventRepository;
-            _emailSender = emailSender;
             _configuration = configuration;
             _mapper = mapper;
         }
@@ -78,40 +86,41 @@ namespace ReactApp1.Server.Controllers
         [Authorize(Roles = "User")]
         public async Task<IActionResult> Participate(EventConfirm model)
         {
-            var user = await _userRepository.GetAsync(model.Email);
+            //var user = await _userRepository.GetAsync(model.Email);
 
-            if (user == null)
-            {
-                return BadRequest("User not found");
-            }
+            //if (user == null)
+            //{
+            //    return BadRequest("User not found");
+            //}
 
-            var userEvent = new UserEvent()
-            {
-                UserId = (int)user.UserId!,
-                EventId = (int)model.EventId!
-            };
+            //var userEvent = new UserEvent()
+            //{
+            //    UserId = (int)user.UserId!,
+            //    EventId = (int)model.EventId!
+            //};
 
-            if (!await _userEventRepository.ExistsAsync(userEvent))
-            {
-                await _userEventRepository.CreateAsync(userEvent);
-            }
-            var url = $"<button>" +
-                $"<a href='{_configuration["ClientUrl"]}/confirm/{userEvent.UserId}/{userEvent.EventId}' " +
-                $"style=\"text-decoration: none; color: black\">" +
-                $"Confirm Participation" +
-                $"</a>" +
-                $"</button>";
+            //if (!await _userEventRepository.ExistsAsync(userEvent))
+            //{
+            //    await _userEventRepository.CreateAsync(userEvent);
+            //}
+            //var url = $"<button>" +
+            //    $"<a href='{_configuration["ClientUrl"]}/confirm/{userEvent.UserId}/{userEvent.EventId}' " +
+            //    $"style=\"text-decoration: none; color: black\">" +
+            //    $"Confirm Participation" +
+            //    $"</a>" +
+            //    $"</button>";
 
-            var result = await _emailSender.SendEmailAsync(model.Email, "Thank you! Event participation confirmed!", url);
+            //var result = await _emailSender.SendEmailAsync(model.Email, "Thank you! Event participation confirmed!", url);
 
-            if (result.Value.Status == EmailSendStatus.Succeeded)
-            {
-                return Ok("Email sent");
-            }
-            else
-            {
-                return BadRequest("Error while sending email");
-            }
+            //if (result.Value.Status == EmailSendStatus.Succeeded)
+            //{
+            //    return Ok("Email sent");
+            //}
+            //else
+            //{
+            //    return BadRequest("Error while sending email");
+            //}
+            return Ok();
         }
 
         [HttpGet]

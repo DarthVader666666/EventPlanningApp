@@ -49,7 +49,7 @@ namespace EventPlanning.Bll.Services.JsonRepositories
             return eventItem;
         }
 
-        public async Task<IEnumerable<Event?>> GetListAsync(object? id)
+        public async Task<IEnumerable<Event?>> GetListAsync(object? id = null)
         {
             var events = _eventCollection.AsQueryable().Select(e =>
             {
