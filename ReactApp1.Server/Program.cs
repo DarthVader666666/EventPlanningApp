@@ -55,23 +55,23 @@ else
 {
     var path = $"{Directory.GetCurrentDirectory()}\\eventDb.json";
 
-    //if (!File.Exists(path))
-    //{
-    //    File.Create(path);
-    //}
+    if (!File.Exists(path))
+    {
+        File.Create(path);
+    }
 
-    builder.Services.AddScoped<EventJsonRepository>();
-    builder.Services.AddScoped<UserEventJsonRepository>();
-    builder.Services.AddScoped<UserJsonRepository>();
-    builder.Services.AddScoped<RoleJsonRepository>();
-    builder.Services.AddScoped<ThemeJsonRepository>();
+    builder.Services.AddScoped<IRepository<Event>, EventJsonRepository>();
+    builder.Services.AddScoped<IRepository<UserEvent>,UserEventJsonRepository>();
+    builder.Services.AddScoped<IRepository<User>, UserJsonRepository>();
+    builder.Services.AddScoped<IRepository<Role>, RoleJsonRepository>();
+    builder.Services.AddScoped<IRepository<Theme>, ThemeJsonRepository>();
     builder.Services.AddScoped(serviceProvider => new DataStore(path, useLowerCamelCase: false));
 }
 
-//builder.Services.AddScoped<EmailSender>();
+builder.Services.AddScoped<EmailSender>();
 
 using var scope = builder.Services?.BuildServiceProvider()?.CreateScope();
-//await MigrateSeedDatabase(scope);
+await MigrateSeedDatabase(scope);
 
 var app = builder.Build();
 
