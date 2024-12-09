@@ -34,7 +34,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 builder.Services.ConfigureAutomapper();
 
-if (!builder.Environment.IsDevelopment())
+if (builder.Environment.IsDevelopment())
 {
     var connectionString = builder.Configuration.GetConnectionString("EventDb");
     builder.Services.AddDbContext<EventPlanningDbContext>(options => options.UseSqlServer(connectionString));
@@ -89,7 +89,7 @@ app.Run();
 
 async Task MigrateSeedDatabase(IServiceScope? scope)
 {
-    if (!builder.Environment.IsDevelopment())
+    if (builder.Environment.IsDevelopment())
     {
         var dbContext = scope?.ServiceProvider.GetRequiredService<EventPlanningDbContext>();
         dbContext?.Database.Migrate();
