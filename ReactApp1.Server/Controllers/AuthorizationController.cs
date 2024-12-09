@@ -5,7 +5,6 @@ using EventPlanning.Api.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -61,7 +60,7 @@ namespace EventPlanning.Api.Controllers
                 role = identity.RoleClaimType
             };
 
-            return Ok(JsonConvert.SerializeObject(response));
+            return Ok(response);
             //return Ok("Login Post Worked");
         }
 

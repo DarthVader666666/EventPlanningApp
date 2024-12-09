@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
 const useFetch = (url, method, body) => {
-  const requestUrl =  (import.meta.env.MODE === 'development' ? '' : 'https://reactapp1-gtezcxf0c4aphqe3.westeurope-01.azurewebsites.net/');
   const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState(null);
@@ -9,7 +8,7 @@ const useFetch = (url, method, body) => {
 
   useEffect(() => {
     const token = sessionStorage.getItem("access_token");
-    fetch(requestUrl + url, 
+    fetch(url, 
         { 
           method: method ? method : 'GET',
           body: body,
@@ -50,7 +49,7 @@ const useFetch = (url, method, body) => {
           }
         })
       },
-   [requestUrl + url,method,body])
+   [url,method,body])
 
   return { data, isPending, error, status };
 }

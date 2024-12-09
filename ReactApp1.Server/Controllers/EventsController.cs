@@ -3,7 +3,6 @@ using Azure.Communication.Email;
 using EventPlanning.Api.Models;
 using EventPlanning.Bll.Interfaces;
 using EventPlanning.Bll.Services;
-using EventPlanning.Bll.Services.JsonRepositories;
 using EventPlanning.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -55,7 +54,6 @@ namespace ReactApp1.Server.Controllers
 
             return mappedEvent;
         }
-
 
         [HttpPost]
         [Route("api/[controller]/create")]

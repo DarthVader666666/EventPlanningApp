@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 
 const LogIn = () => {
-    //const serverBaseUrl = process.env.REACT_APP_ENV === 'Development' ? process.env.REACT_APP_API_URL : '';
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     
