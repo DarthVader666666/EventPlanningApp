@@ -34,7 +34,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 builder.Services.ConfigureAutomapper();
 
-if (builder.Environment.IsDevelopment())
+if (!builder.Environment.IsDevelopment())
 {
     var connectionString = builder.Configuration.GetConnectionString("EventDb");
     builder.Services.AddDbContext<EventPlanningDbContext>(options => options.UseSqlServer(connectionString));
@@ -49,10 +49,10 @@ else
 {
     var path = $"{Directory.GetCurrentDirectory()}\\eventDb.json";
 
-    if (!File.Exists(path))
-    {
-        File.Create(path);
-    }
+    //if (!File.Exists(path))
+    //{
+    //    File.Create(path);
+    //}
 
     builder.Services.AddScoped<EventJsonRepository>();
     builder.Services.AddScoped<UserEventJsonRepository>();

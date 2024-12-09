@@ -29,14 +29,14 @@ namespace ReactApp1.Server.Controllers
         private readonly IMapper _mapper;
 
         public EventsController(IMapper mapper, 
-            EventJsonRepository eventRepository, 
-            UserJsonRepository userRepository,
-            UserEventJsonRepository userEventRepository, 
+            //EventJsonRepository eventRepository, 
+            //UserJsonRepository userRepository,
+            //UserEventJsonRepository userEventRepository, 
             IConfiguration configuration)
         {
-            _eventRepository = eventRepository;
-            _userRepository = userRepository;
-            _userEventRepository = userEventRepository;
+            //_eventRepository = eventRepository;
+            //_userRepository = userRepository;
+            //_userEventRepository = userEventRepository;
             _configuration = configuration;
             _mapper = mapper;
         }
@@ -45,10 +45,10 @@ namespace ReactApp1.Server.Controllers
         [Route("api/[controller]")]
         public async Task<IActionResult> Index()
         {
-            var events = await _eventRepository.GetListAsync();
-            var mappedEvents = _mapper.Map<IEnumerable<Event>, IEnumerable<EventIndexModel>>(events);
-            return Ok(mappedEvents);
-            //return Ok(Enumerable.Empty<Event>());
+            //var events = await _eventRepository.GetListAsync();
+            //var mappedEvents = _mapper.Map<IEnumerable<Event>, IEnumerable<EventIndexModel>>(events);
+            //return Ok(mappedEvents);
+            return Ok(Enumerable.Empty<Event>());
         }
 
         [HttpGet]
