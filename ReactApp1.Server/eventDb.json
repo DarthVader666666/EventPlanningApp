@@ -19,5 +19,83 @@
       "RoleId": 1,
       "UserId": 1
     }
+  ],
+  "Theme": [
+    {
+      "ThemeId": 1,
+      "ThemeName": "Music",
+      "SubThemes": null
+    },
+    {
+      "ThemeId": 2,
+      "ThemeName": "Sport",
+      "SubThemes": null
+    },
+    {
+      "ThemeId": 3,
+      "ThemeName": "Conference",
+      "SubThemes": null
+    },
+    {
+      "ThemeId": 4,
+      "ThemeName": "Corporate Party",
+      "SubThemes": null
+    }
+  ],
+  "SubTheme": [
+    {
+      "SubThemeId": 1,
+      "ThemeId": 1,
+      "SubThemeName": "Rock Fest",
+      "Theme": null
+    },
+    {
+      "SubThemeId": 2,
+      "ThemeId": 1,
+      "SubThemeName": "Classic orchestra",
+      "Theme": null
+    },
+    {
+      "SubThemeId": 3,
+      "ThemeId": 1,
+      "SubThemeName": "Blues band",
+      "Theme": null
+    },
+    {
+      "SubThemeId": 4,
+      "ThemeId": 2,
+      "SubThemeName": "Football match",
+      "Theme": null
+    },
+    {
+      "SubThemeId": 5,
+      "ThemeId": 2,
+      "SubThemeName": "Fitness event",
+      "Theme": null
+    },
+    {
+      "SubThemeId": 6,
+      "ThemeId": 2,
+      "SubThemeName": "Yoga class",
+      "Theme": null
+    },
+    {
+      "SubThemeId": 7,
+      "ThemeId": 3,
+      "SubThemeName": "IT club",
+      "Theme": null
+    },
+    {
+      "SubThemeId": 8,
+      "ThemeId": 3,
+      "SubThemeName": "Buisness coaching",
+      "Theme": null
+    },
+    {
+      "SubThemeId": 9,
+      "ThemeId": 3,
+      "SubThemeName": "Literature talks",
+      "Theme": null
+    }
   ]
 }

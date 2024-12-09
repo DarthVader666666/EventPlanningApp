@@ -11,6 +11,7 @@ using EventPlanning.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using EventPlanning.Server.Configurations;
 
+var jsonFileCreated = false;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -57,29 +58,31 @@ else
 
     if (!File.Exists(path))
     {
-        File.Create(path);
+        var stream = File.Create(path);
+        stream.Close();
+        File.WriteAllText(path, "{}");
+        jsonFileCreated = true;
     }
+
+    builder.Services.AddScoped(serviceProvider => new DataStore(path, useLowerCamelCase: false));
 
     builder.Services.AddScoped<IRepository<Event>, EventJsonRepository>();
     builder.Services.AddScoped<IRepository<UserEvent>,UserEventJsonRepository>();
     builder.Services.AddScoped<IRepository<User>, UserJsonRepository>();
     builder.Services.AddScoped<IRepository<Role>, RoleJsonRepository>();
     builder.Services.AddScoped<IRepository<Theme>, ThemeJsonRepository>();
-    builder.Services.AddScoped(serviceProvider => new DataStore(path, useLowerCamelCase: false));
 }
 
 builder.Services.AddScoped<EmailSender>();
 
 using var scope = builder.Services?.BuildServiceProvider()?.CreateScope();
-await MigrateSeedDatabase(scope);
+await MigrateSeedDatabase(scope, jsonFileCreated);
 
 var app = builder.Build();
 
 app.UseCors("AllowClient");
-
 app.UseDefaultFiles();
 app.UseStaticFiles();
-
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -93,28 +96,47 @@ app.MapFallbackToFile("/index.html");
 
 app.Run();
 
-async Task MigrateSeedDatabase(IServiceScope? scope)
+async Task MigrateSeedDatabase(IServiceScope? scope, bool jsonFileCreated)
 {
     if (builder.Environment.IsDevelopment())
     {
         var dbContext = scope?.ServiceProvider.GetRequiredService<EventPlanningDbContext>();
         dbContext?.Database.Migrate();
     }
-    else
+    else if (jsonFileCreated)
     {
-        var userJsonRepository = scope?.ServiceProvider.GetRequiredService<IRepository<User>>();
-        var roleJsonRepository = scope?.ServiceProvider.GetRequiredService<IRepository<Role>>();
-        var userRoleCollection = scope?.ServiceProvider.GetRequiredService<DataStore>().GetCollection<UserRole>();
+        var dataStore = scope?.ServiceProvider.GetRequiredService<DataStore>();
 
-        if (!(await userJsonRepository.GetListAsync()).Any(user => user.Email == builder.Configuration["AdminEmail"]))
+        var userCollection = dataStore.GetCollection<User>();
+        var roleCollection = dataStore.GetCollection<Role>();
+        var userRoleCollection = dataStore.GetCollection<UserRole>();
+        var themeCollection = dataStore.GetCollection<Theme>();
+        var subThemeCollection = dataStore.GetCollection<SubTheme>();
+
+        if (userCollection.Find(user => user.Email == builder.Configuration["AdminEmail"]).Count() == 0)
         {
-            var user = await userJsonRepository.CreateAsync(new User { Email = builder.Configuration["AdminEmail"], Password = builder.Configuration["AdminPassword"] });
-            var role = await roleJsonRepository.CreateAsync(new Role { RoleName = "Admin" });
-
-            if (user != null && role != null)
-            {
-                await userRoleCollection.InsertOneAsync(new UserRole { RoleId = role.RoleId, UserId = user.UserId });
-            }
+            await userCollection.InsertOneAsync(new User { UserId = 1, Email = builder.Configuration["AdminEmail"], Password = builder.Configuration["AdminPassword"] });
+            await roleCollection.InsertOneAsync(new Role { RoleId = 1, RoleName = "Admin" });
+            await userRoleCollection.InsertOneAsync(new UserRole { RoleId = 1, UserId = 1 });
         }
+
+        await themeCollection.InsertManyAsync(new List<Theme> { 
+            new () { ThemeId = 1, ThemeName = "Music" },
+            new () { ThemeId = 2, ThemeName = "Sport" },
+            new () { ThemeId = 3, ThemeName = "Conference" },
+            new () { ThemeId = 4, ThemeName = "Corporate Party" }
+        });
+
+        await subThemeCollection.InsertManyAsync(new List<SubTheme> {
+            new () { SubThemeId = 1, ThemeId = 1, SubThemeName = "Rock Fest" },
+            new () { SubThemeId = 2, ThemeId = 1, SubThemeName = "Classic orchestra" },
+            new () { SubThemeId = 3, ThemeId = 1, SubThemeName = "Blues band" },
+            new () { SubThemeId = 4, ThemeId = 2, SubThemeName = "Football match" },
+            new () { SubThemeId = 5, ThemeId = 2, SubThemeName = "Fitness event" },
+            new () { SubThemeId = 6, ThemeId = 2, SubThemeName = "Yoga class" },
+            new () { SubThemeId = 7, ThemeId = 3, SubThemeName = "IT club" },
+            new () { SubThemeId = 8, ThemeId = 3, SubThemeName = "Buisness coaching" },
+            new () { SubThemeId = 9, ThemeId = 3, SubThemeName = "Literature talks" }
+        });
     }
 }
