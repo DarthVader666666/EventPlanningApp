@@ -65,7 +65,7 @@ else
 builder.Services.AddScoped<EmailSender>();
 
 using var scope = builder.Services?.BuildServiceProvider()?.CreateScope();
-await MigrateSeedDatabase(scope);
+//await MigrateSeedDatabase(scope);
 
 var app = builder.Build();
 
