@@ -24,7 +24,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     {
         ValidIssuer = "Test",
         ValidAudience = "Test",
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Test")),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("TestTestTestTestTestTestTestTestTestTestTestTest")),
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateIssuerSigningKey = true,
@@ -34,7 +34,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 builder.Services.ConfigureAutomapper();
 
-if (builder.Environment.IsDevelopment())
+if (!builder.Environment.IsDevelopment())
 {
     var connectionString = builder.Configuration.GetConnectionString("EventDb");
     builder.Services.AddDbContext<EventPlanningDbContext>(options => options.UseSqlServer(connectionString));
@@ -65,7 +65,7 @@ else
 builder.Services.AddScoped<EmailSender>();
 
 using var scope = builder.Services?.BuildServiceProvider()?.CreateScope();
-//await MigrateSeedDatabase(scope);
+await MigrateSeedDatabase(scope);
 
 var app = builder.Build();
 
@@ -89,7 +89,7 @@ app.Run();
 
 async Task MigrateSeedDatabase(IServiceScope? scope)
 {
-    if (builder.Environment.IsDevelopment())
+    if (!builder.Environment.IsDevelopment())
     {
         var dbContext = scope?.ServiceProvider.GetRequiredService<EventPlanningDbContext>();
         dbContext?.Database.Migrate();
