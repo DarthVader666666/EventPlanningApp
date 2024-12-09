@@ -15,6 +15,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddLogging(logs => 
+{
+    logs.AddConsole();
+    logs.AddAzureWebAppDiagnostics();
+});
+
 builder.Services.AddControllers();
 builder.Services.AddCors(opts => opts.AddPolicy("AllowClient", policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
