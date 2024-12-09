@@ -15,7 +15,7 @@ namespace EventPlanning.Bll.Services.JsonRepositories
             _roleCollection = dataStore.GetCollection<Role>();
             _userRoleCollection = dataStore.GetCollection<UserRole>();
             var collection = _roleCollection.AsQueryable();
-            nextRoleId = collection.Any() ? 1 : collection.Max(x => x.RoleId) + 1;
+            nextRoleId = !collection.Any() ? 1 : collection.Max(x => x.RoleId) + 1;
         }
 
         public async Task<Role?> CreateAsync(Role item)

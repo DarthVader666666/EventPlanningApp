@@ -49,6 +49,11 @@ else
 {
     var path = $"{Directory.GetCurrentDirectory()}\\eventDb.json";
 
+    if (!File.Exists(path))
+    {
+        File.Create(path);
+    }
+
     builder.Services.AddScoped<IRepository<Event>, EventJsonRepository>();
     builder.Services.AddScoped<IRepository<UserEvent>, UserEventJsonRepository>();
     builder.Services.AddScoped<IRepository<User>, UserJsonRepository>();
@@ -58,6 +63,9 @@ else
 }
 
 builder.Services.AddScoped<EmailSender>();
+
+using var scope = builder.Services?.BuildServiceProvider()?.CreateScope();
+await MigrateSeedDatabase(scope);
 
 var app = builder.Build();
 
@@ -78,3 +86,29 @@ app.MapControllerRoute(
 app.MapFallbackToFile("/index.html");
 
 app.Run();
+
+async Task MigrateSeedDatabase(IServiceScope? scope)
+{
+    if (builder.Environment.IsDevelopment())
+    {
+        var dbContext = scope?.ServiceProvider.GetRequiredService<EventPlanningDbContext>();
+        dbContext?.Database.Migrate();
+    }
+    else
+    {
+        var userJsonRepository = scope?.ServiceProvider.GetRequiredService<IRepository<User>>();
+        var roleJsonRepository = scope?.ServiceProvider.GetRequiredService<IRepository<Role>>();
+        var userRoleCollection = scope?.ServiceProvider.GetRequiredService<DataStore>().GetCollection<UserRole>();
+
+        if (!(await userJsonRepository.GetListAsync()).Any(user => user.Email == builder.Configuration["AdminEmail"]))
+        {
+            var user = await userJsonRepository.CreateAsync(new User { Email = builder.Configuration["AdminEmail"], Password = builder.Configuration["AdminPassword"] });
+            var role = await roleJsonRepository.CreateAsync(new Role { RoleName = "Admin" });
+
+            if (user != null && role != null)
+            {
+                await userRoleCollection.InsertOneAsync(new UserRole { RoleId = role.RoleId, UserId = user.UserId });
+            }
+        }
+    }
+}

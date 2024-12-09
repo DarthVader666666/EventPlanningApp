@@ -13,7 +13,7 @@ namespace EventPlanning.Bll.Services.JsonRepositories
         {
             _userCollection = dataStore.GetCollection<User>();
             var collection = _userCollection.AsQueryable();
-            nextUserId = collection.Any() ? 1 : collection.Max(x => x.UserId) + 1;
+            nextUserId = !collection.Any() ? 1 : collection.Max(x => x.UserId) + 1;
         }
 
         public async Task<User?> CreateAsync(User item)

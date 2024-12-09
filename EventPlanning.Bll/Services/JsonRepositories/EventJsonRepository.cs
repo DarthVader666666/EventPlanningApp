@@ -17,7 +17,7 @@ namespace EventPlanning.Bll.Services.JsonRepositories
             _themeCollection = dataStore.GetCollection<Theme>();
             _subThemeCollection = dataStore.GetCollection<SubTheme>();
             var collection = _eventCollection.AsQueryable();
-            nextEventId = collection.Any() ? 1 : collection.Max(x => x.EventId) + 1;
+            nextEventId = !collection.Any() ? 1 : collection.Max(x => x.EventId) + 1;
         }
 
         public async Task<Event?> CreateAsync(Event item)
