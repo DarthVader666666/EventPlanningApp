@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using EventPlanning.Api.Models;
 using EventPlanning.Data.Entities;
-using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
 
 namespace EventPlanning.Server.Configurations
