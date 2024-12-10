@@ -1,5 +1,4 @@
 const EventList = ( events ) => {
-  console.log(events.events)
   return (    
     <div className="event-list">
       { events.events == [] ? <h1>Event List Is Empty</h1>

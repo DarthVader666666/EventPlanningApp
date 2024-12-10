@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using EventPlanning.Api.Configurations;
-using Microsoft.Extensions.Logging;
 
 var jsonFileCreated = false;
 var builder = WebApplication.CreateBuilder(args);
