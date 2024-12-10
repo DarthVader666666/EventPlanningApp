@@ -52,7 +52,7 @@ namespace EventPlanning.Api.Configurations
 
         private static SubThemeIndexModel[]? GetSubThemes(ICollection<SubTheme>? subThemes)
         {
-            if (subThemes.Any())
+            if (!subThemes.Any())
             {
                 return null;
             }

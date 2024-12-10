@@ -47,7 +47,7 @@ builder.Services.ConfigureAutomapper();
 
 if (builder.Environment.IsDevelopment())
 {
-    var connectionString = builder.Configuration.GetConnectionString("EventDb");
+    var connectionString = builder.Configuration.GetConnectionString("EventDb") ?? throw new ArgumentNullException("EventDb", "Connection string can't be null");
     builder.Services.AddDbContext<EventPlanningDbContext>(options => options.UseSqlServer(connectionString));
 
     builder.Services.AddScoped<IRepository<Event>, EventRepository>();
