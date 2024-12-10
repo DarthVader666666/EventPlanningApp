@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 
-namespace ReactApp1.Server.Controllers
+namespace EventPlanning.Api.Controllers
 {
     [ApiController]
     [EnableCors("AllowClient")]

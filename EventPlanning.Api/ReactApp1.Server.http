@@ -1,6 +1,6 @@
-@ReactApp1.Server_HostAddress = http://localhost:5187
+@EventPlanning.Api_HostAddress = http://localhost:5187
 
-GET {{ReactApp1.Server_HostAddress}}/weatherforecast/
+GET {{EventPlanning.Api_HostAddress}}/events/
 Accept: application/json
 
 ###

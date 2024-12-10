@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <SpaRoot>..\reactapp1.client</SpaRoot>
+    <SpaRoot>..\eventplanning.client</SpaRoot>
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
     <SpaProxyServerUrl>https://localhost:5173</SpaProxyServerUrl>
     <UserSecretsId>e44a019b-f837-4e72-8748-40c8730a2dd2</UserSecretsId>
@@ -25,7 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EventPlanning.Bll\EventPlanning.Bll.csproj" />
     <ProjectReference Include="..\EventPlanning.Data\EventPlanning.Data.csproj" />
-    <ProjectReference Include="..\reactapp1.client\eventplanning.client.esproj">
+    <ProjectReference Include="..\eventplanning.client\eventplanning.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

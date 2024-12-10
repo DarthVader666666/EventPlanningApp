@@ -6,7 +6,7 @@ import fs from 'fs';
 import child_process from 'child_process';
 import { env } from 'process';
 
-const certificateName = "reactapp1.client";
+const certificateName = "eventplanning.client";
 const certFilePath = `${certificateName}.pem`;
 const keyFilePath = `${certificateName}.key`;
 
