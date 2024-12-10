@@ -7,11 +7,14 @@ namespace EventPlanning.Bll.Services.JsonRepositories
     public class UserJsonRepository : IRepository<User>
     {
         private readonly IDocumentCollection<User> _userCollection;
+        private readonly IDocumentCollection<UserRole> _userRoleCollection;
         private int nextUserId;
 
         public UserJsonRepository(DataStore dataStore)
         {
             _userCollection = dataStore.GetCollection<User>();
+            _userRoleCollection = dataStore.GetCollection<UserRole>();
+
             var collection = _userCollection.AsQueryable();
             nextUserId = !collection.Any() ? 1 : collection.Max(x => x.UserId) + 1;
         }
@@ -20,6 +23,8 @@ namespace EventPlanning.Bll.Services.JsonRepositories
         {
             item.UserId = nextUserId++;
             await _userCollection.InsertOneAsync(item);
+            await _userRoleCollection.InsertOneAsync(new UserRole { UserId = item.UserId, RoleId = 2 });
+
             return item;
         }
 
