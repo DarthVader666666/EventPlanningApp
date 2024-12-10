@@ -1,7 +1,8 @@
 const EventList = ( events ) => {
   return (
     <div className="event-list">
-      { events == [] ? events.map((event, index) => (
+      { events.events == [] ?  <h1>Event List Is Empty</h1>      
+      : events.events.map((event, index) => (
         <div className="event-preview" key={index} >
             <h2>{ event.title }</h2>
             <h3>Theme:</h3>
@@ -13,7 +14,7 @@ const EventList = ( events ) => {
             <h3>Performers:</h3>
             <div>{ event.participants }</div>
         </div>
-      )) : <h1>Event List Is Empty</h1>}
+      ))}      
     </div>
   );
 }

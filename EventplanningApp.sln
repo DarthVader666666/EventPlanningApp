@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlanning.Api", "ReactApp1.Server\EventPlanning.Api.csproj", "{E85AACA4-5F33-4BEA-B5A2-7C72937F62B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlanning.Api", "EventPlanning.Api\EventPlanning.Api.csproj", "{E85AACA4-5F33-4BEA-B5A2-7C72937F62B5}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "eventplanning.client", "reactapp1.client\eventplanning.client.esproj", "{EFF55816-6794-4956-A06C-6DA04F44396D}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "eventplanning.client", "eventplanning.client\eventplanning.client.esproj", "{EFF55816-6794-4956-A06C-6DA04F44396D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPlanning.Bll", "EventPlanning.Bll\EventPlanning.Bll.csproj", "{7451A2C6-6A61-4F0C-A4FF-719C38F2C7D5}"
 EndProject

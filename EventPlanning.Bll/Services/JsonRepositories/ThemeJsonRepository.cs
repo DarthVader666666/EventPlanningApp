@@ -1,7 +1,6 @@
 ﻿using EventPlanning.Bll.Interfaces;
 using EventPlanning.Data.Entities;
 using JsonFlatFileDataStore;
-using Microsoft.EntityFrameworkCore;
 
 namespace EventPlanning.Bll.Services.JsonRepositories
 {
@@ -44,8 +43,14 @@ namespace EventPlanning.Bll.Services.JsonRepositories
 
         public async Task<IEnumerable<Theme?>> GetListAsync(object? id)
         {
-            var themes = ((IQueryable<Theme>)_themeCollection.AsQueryable()).Include(x => x.SubThemes);
-            return await Task.Run(() => themes.ToList());
+            var themesWithSubThemes = _themeCollection.AsQueryable().Select(t => new Theme 
+            {
+                ThemeId = t.ThemeId,
+                ThemeName = t.ThemeName,
+                SubThemes = _subThemeCollection.Find(st => st.ThemeId == t.ThemeId).ToList()
+            });
+
+            return await Task.Run(() => themesWithSubThemes);
         }
 
         public Task<Theme?> UpdateAsync(Theme item)

@@ -58,7 +58,7 @@ if (builder.Environment.IsDevelopment())
 }
 else
 {
-    var path = $"{Directory.GetCurrentDirectory()}\\eventDb.json";
+    var path = $"{Directory.GetCurrentDirectory()}\\EventDbJson\\eventDb.json";
 
     if (!File.Exists(path))
     {
