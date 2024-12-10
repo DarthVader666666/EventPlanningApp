@@ -15,7 +15,6 @@ var jsonFileCreated = false;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddLogging(logs => 
 {
     logs.AddConsole();
@@ -23,7 +22,12 @@ builder.Services.AddLogging(logs =>
 });
 
 builder.Services.AddControllers();
-builder.Services.AddCors(opts => opts.AddPolicy("AllowClient", policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+
+builder.Services.AddCors(opts => opts.AddPolicy("AllowClient", policy => 
+    policy.WithOrigins(builder.Configuration["ClientUrl"] ?? throw new ArgumentNullException("No ClientUrl in configuration"))
+    .AllowAnyMethod()
+    .AllowAnyHeader())
+);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
@@ -31,7 +35,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     {
         ValidIssuer = "Test",
         ValidAudience = "Test",
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("TestTestTestTestTestTestTestTestTestTestTestTest")),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["SecretKey"] ?? throw new ArgumentNullException("No SecretKey in configuration"))),
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateIssuerSigningKey = true,
@@ -75,10 +79,11 @@ else
 
 builder.Services.AddScoped<EmailSender>();
 
-using var scope = builder.Services?.BuildServiceProvider()?.CreateScope();
+var provider = builder?.Services.BuildServiceProvider();
+using var scope = provider?.CreateScope();
 await MigrateSeedDatabase(scope, jsonFileCreated);
 
-var app = builder.Build();
+var app = builder?.Build();
 
 app.UseCors("AllowClient");
 app.UseDefaultFiles();
@@ -105,7 +110,7 @@ async Task MigrateSeedDatabase(IServiceScope? scope, bool jsonFileCreated)
     }
     else if (jsonFileCreated)
     {
-        var dataStore = scope?.ServiceProvider.GetRequiredService<DataStore>();
+        var dataStore = scope?.ServiceProvider.GetRequiredService<DataStore>() ?? throw new ArgumentNullException("Could not get DataStore from DI");
 
         var userCollection = dataStore.GetCollection<User>();
         var roleCollection = dataStore.GetCollection<Role>();
