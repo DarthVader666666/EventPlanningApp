@@ -97,21 +97,5 @@
       "SubThemeName": "Literature talks",
       "Theme": null
     }
-  ],
-  "Event": [
-    {
-      "EventId": 1,
-      "Title": "dfsf",
-      "DressCode": false,
-      "Date": "2024-12-20T11:06:00",
-      "AmountOfVacantPlaces": 2,
-      "Address": null,
-      "ThemeId": 2,
-      "SubThemeId": 5,
-      "Location": "sdfsd",
-      "Participants": "sdfsdf",
-      "Theme": null,
-      "SubTheme": null
-    }
   ]
 }

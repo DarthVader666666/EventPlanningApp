@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using EventPlanning.Api.Configurations;
+using Microsoft.Extensions.Logging;
 
 var jsonFileCreated = false;
 var builder = WebApplication.CreateBuilder(args);
@@ -58,7 +59,14 @@ if (builder.Environment.IsDevelopment())
 }
 else
 {
-    var path = $"{Directory.GetCurrentDirectory()}\\EventDbJson\\eventDb.json";
+    var path = $"{Directory.GetCurrentDirectory()}\\EventDbJson\\";
+
+    if (!Directory.Exists(path))
+    { 
+        Directory.CreateDirectory(path);
+    }
+
+    path += "eventDb.json";
 
     if (!File.Exists(path))
     {
