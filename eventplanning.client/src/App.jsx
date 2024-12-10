@@ -3,7 +3,7 @@ import Navbar from './Navbar.jsx';
 import LogIn from './Login.jsx';
 import Create from './Create.jsx';
 //import Register from './Register.jsx';
-//import EventDetails from './EventDetails.jsx';
+import EventDetails from './EventDetails.jsx';
 //import Confirm from './Confirm.jsx';
 import {
     BrowserRouter as Router,
@@ -20,6 +20,7 @@ function App() {
                         <Route path="/" element={<Home/>}></Route>
                         <Route path="/login" element={<LogIn/>}></Route>
                         <Route path="/create" element={<Create/>}></Route>
+                        <Route path="/:eventId" element={<EventDetails />}></Route>
                     </Routes>
                 </div>
             </div>    

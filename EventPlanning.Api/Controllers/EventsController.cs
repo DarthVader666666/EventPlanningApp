@@ -73,7 +73,7 @@ namespace EventPlanning.Api.Controllers
 
         [HttpPost]
         [Route("api/[controller]/participate")]
-        [Authorize(Roles = "User")]
+        //[Authorize(Roles = "User")]
         public async Task<IActionResult> Participate(EventConfirm eventConfirmModel)
         {
             if (eventConfirmModel == null)
