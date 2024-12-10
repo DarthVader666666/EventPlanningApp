@@ -15,9 +15,13 @@ namespace EventPlanning.Bll.Services.SqlRepositories
 
         public async Task<User?> CreateAsync(User item)
         {
-            _dbContext.Users.Add(item);
+            var user = _dbContext.Users.Add(item).Entity;
             await _dbContext.SaveChangesAsync();
-            return item;
+
+            _dbContext.UserRoles.Add(new UserRole { UserId = user.UserId, RoleId = 2 });
+            await _dbContext.SaveChangesAsync();
+
+            return user;
         }
 
         public Task<User?> DeleteAsync(object? id)

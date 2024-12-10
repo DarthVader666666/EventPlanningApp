@@ -55,7 +55,7 @@ namespace EventPlanning.Api.Controllers
                     );
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
+             
             var response = new
             {
                 access_token = encodedJwt,
@@ -64,12 +64,11 @@ namespace EventPlanning.Api.Controllers
             };
 
             return Ok(response);
-            //return Ok("Login Post Worked");
         }
 
         [HttpPost]
         [Route("api/[controller]/register")]
-        public async Task<IActionResult> Register(UserRegisterModel userRegister)
+        public async Task<IActionResult> Register([FromBody] UserRegisterModel userRegister)
         {
             if (await DoesUserExist(userRegister?.Email))
             {

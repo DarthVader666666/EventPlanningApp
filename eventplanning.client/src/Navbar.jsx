@@ -14,6 +14,7 @@ const Navbar = () => {
   }
 
   const name = sessionStorage.getItem("user_name");
+  const role = sessionStorage.getItem("role");
 
   return (
     <nav className="navbar">
@@ -23,7 +24,7 @@ const Navbar = () => {
       <div className="links">
         <Link to="/">Home</Link>
         {
-          name &&
+          role == 'Admin' &&
           <Link to="/create" className="create-button">New Event</Link>
         }
         <Link to="/login">{name ? name : "Log In"}</Link>

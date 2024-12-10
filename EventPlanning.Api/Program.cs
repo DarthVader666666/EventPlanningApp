@@ -129,6 +129,7 @@ async Task MigrateSeedDatabase(IServiceScope? scope, bool jsonFileCreated)
         {
             await userCollection.InsertOneAsync(new User { UserId = 1, Email = builder.Configuration["AdminEmail"], Password = builder.Configuration["AdminPassword"] });
             await roleCollection.InsertOneAsync(new Role { RoleId = 1, RoleName = "Admin" });
+            await roleCollection.InsertOneAsync(new Role { RoleId = 2, RoleName = "User" });
             await userRoleCollection.InsertOneAsync(new UserRole { RoleId = 1, UserId = 1 });
         }
 

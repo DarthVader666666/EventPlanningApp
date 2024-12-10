@@ -2,7 +2,7 @@ import Home from './Home.jsx';
 import Navbar from './Navbar.jsx';
 import LogIn from './Login.jsx';
 import Create from './Create.jsx';
-//import Register from './Register.jsx';
+import Register from './Register.jsx';
 import EventDetails from './EventDetails.jsx';
 //import Confirm from './Confirm.jsx';
 import {
@@ -19,6 +19,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Home/>}></Route>
                         <Route path="/login" element={<LogIn/>}></Route>
+                        <Route path="/register" element={<Register/>}></Route>
                         <Route path="/create" element={<Create/>}></Route>
                         <Route path="/:eventId" element={<EventDetails />}></Route>
                     </Routes>

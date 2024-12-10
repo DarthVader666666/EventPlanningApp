@@ -13,6 +13,11 @@ namespace EventPlanning.Data
             _configuration = configuration;
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(_configuration["ConnectionStrings:EventDb"]);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>(user => 

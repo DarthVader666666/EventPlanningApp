@@ -39,6 +39,7 @@ const LogIn = () => {
                         const data = await response.json();
                         sessionStorage.setItem("access_token", data.access_token);
                         sessionStorage.setItem("user_name", data.user_name);
+                        sessionStorage.setItem("role", data.role);
                         navigate("/");
                     }
                 })
