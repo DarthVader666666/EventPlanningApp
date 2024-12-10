@@ -1,15 +1,15 @@
+using EventPlanning.Data;
+using EventPlanning.Data.Entities;
 using EventPlanning.Bll.Interfaces;
-using EventPlanning.Bll.Services.JsonRepositories;
 using EventPlanning.Bll.Services;
+using EventPlanning.Bll.Services.JsonRepositories;
 using EventPlanning.Bll.Services.SqlRepositories;
 using JsonFlatFileDataStore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using EventPlanning.Data;
-using EventPlanning.Data.Entities;
-using Microsoft.EntityFrameworkCore;
-using EventPlanning.Server.Configurations;
+using EventPlanning.Api.Configurations;
 
 var jsonFileCreated = false;
 var builder = WebApplication.CreateBuilder(args);
@@ -35,7 +35,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     {
         ValidIssuer = "Test",
         ValidAudience = "Test",
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["SecretKey"] ?? throw new ArgumentNullException("No SecretKey in configuration"))),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["SecurityKey"] ?? throw new ArgumentNullException("SecurityKey", "SecurityKey can't be null"))),
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateIssuerSigningKey = true,

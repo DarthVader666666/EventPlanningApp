@@ -22,17 +22,14 @@ namespace ReactApp1.Server.Controllers
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
 
-        public EventsController(
-            IMapper mapper,
-            IRepository<Event> eventRepository,
-            IRepository<User> userRepository,
-            IRepository<UserEvent> userEventRepository,
-            IConfiguration configuration)
+        public EventsController(IRepository<Event> eventRepository, IRepository<User> userRepository, IRepository<UserEvent> userEventRepository,
+            IConfiguration configuration, IMapper mapper, EmailSender emailSender)
         {
             _eventRepository = eventRepository;
             _userRepository = userRepository;
             _userEventRepository = userEventRepository;
             _configuration = configuration;
+            _emailSender = emailSender;
             _mapper = mapper;
         }
 
@@ -40,8 +37,8 @@ namespace ReactApp1.Server.Controllers
         [Route("api/[controller]")]
         public async Task<IActionResult> Index()
         {
-            var events = await _eventRepository.GetListAsync();
-            var mappedEvents = _mapper.Map<IEnumerable<Event>, IEnumerable<EventIndexModel>>(events);
+            var events = await _eventRepository.GetListAsync() ?? throw new NullReferenceException("Recieved null parameter events");
+            var mappedEvents = _mapper.Map<IEnumerable<Event>, IEnumerable<EventIndexModel>>(events!);
             return Ok(mappedEvents);
         }
 
@@ -49,8 +46,8 @@ namespace ReactApp1.Server.Controllers
         [Route("api/[controller]/{eventId:int}")]
         public async Task<EventIndexModel> GetEvent([FromRoute] int? eventId)
         {
-            var eventEntity = await _eventRepository.GetAsync(eventId);
-            var mappedEvent = _mapper.Map<Event, EventIndexModel>(eventEntity);
+            var eventEntity = await _eventRepository.GetAsync(eventId) ?? throw new NullReferenceException("Recieved null parameter eventEntity");
+            var mappedEvent = _mapper.Map<Event, EventIndexModel>(eventEntity!);
 
             return mappedEvent;
         }
@@ -77,9 +74,14 @@ namespace ReactApp1.Server.Controllers
         [HttpPost]
         [Route("api/[controller]/participate")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> Participate(EventConfirm model)
+        public async Task<IActionResult> Participate(EventConfirm eventConfirmModel)
         {
-            var user = await _userRepository.GetAsync(model.Email);
+            if (eventConfirmModel == null)
+            {
+                return BadRequest("eventConfirmModel is null");
+            }
+
+            var user = await _userRepository.GetAsync(eventConfirmModel.Email);
 
             if (user == null)
             {
@@ -89,13 +91,14 @@ namespace ReactApp1.Server.Controllers
             var userEvent = new UserEvent()
             {
                 UserId = (int)user.UserId!,
-                EventId = (int)model.EventId!
+                EventId = (int)eventConfirmModel.EventId!
             };
 
             if (!await _userEventRepository.ExistsAsync(userEvent))
             {
                 await _userEventRepository.CreateAsync(userEvent);
             }
+
             var url = $"<button>" +
                 $"<a href='{_configuration["ClientUrl"]}/confirm/{userEvent.UserId}/{userEvent.EventId}' " +
                 $"style=\"text-decoration: none; color: black\">" +
@@ -103,9 +106,9 @@ namespace ReactApp1.Server.Controllers
                 $"</a>" +
                 $"</button>";
 
-            var result = await _emailSender.SendEmailAsync(model.Email, "Thank you! Event participation confirmed!", url);
+            var result = await _emailSender.SendEmailAsync(eventConfirmModel.Email ?? throw new ArgumentNullException("Email", "Email value is null"), "Thank you! Event participation confirmed!", url);
 
-            if (result.Value.Status == EmailSendStatus.Succeeded)
+            if (result?.Value.Status == EmailSendStatus.Succeeded)
             {
                 return Ok("Email sent");
             }

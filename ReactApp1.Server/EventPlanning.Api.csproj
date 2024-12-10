@@ -25,7 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EventPlanning.Bll\EventPlanning.Bll.csproj" />
     <ProjectReference Include="..\EventPlanning.Data\EventPlanning.Data.csproj" />
-    <ProjectReference Include="..\reactapp1.client\reactapp1.client.esproj">
+    <ProjectReference Include="..\reactapp1.client\eventplanning.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

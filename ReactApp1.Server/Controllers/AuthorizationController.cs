@@ -49,7 +49,10 @@ namespace EventPlanning.Api.Controllers
                     notBefore: now,
                     claims: identity.Claims,
                     expires: now.Add(TimeSpan.FromMinutes(10d)),
-                    signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("TestTestTestTestTestTestTestTestTestTestTestTest")), SecurityAlgorithms.HmacSha256));
+                    signingCredentials: new SigningCredentials(
+                        new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(_configuration["SecurityKey"] ?? throw new ArgumentNullException("SecurityKey", "SecurityKey can't be null"))), SecurityAlgorithms.HmacSha256)
+                    );
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 

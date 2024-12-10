@@ -3,7 +3,7 @@ using EventPlanning.Api.Models;
 using EventPlanning.Data.Entities;
 using System.Globalization;
 
-namespace EventPlanning.Server.Configurations
+namespace EventPlanning.Api.Configurations
 {
     public static class AutomapperConfiguration
     {
