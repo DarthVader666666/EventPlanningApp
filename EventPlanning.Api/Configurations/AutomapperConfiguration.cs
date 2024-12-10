@@ -16,8 +16,7 @@ namespace EventPlanning.Api.Configurations
                     autoMapperConfig.CreateMap<Event, EventIndexModel>()
                         .ForMember(eim => eim.ThemeName, opt => opt.MapFrom(e => e.Theme.ThemeName))
                         .ForMember(eim => eim.SubThemeName, opt => opt.MapFrom(e => e.SubTheme.SubThemeName))
-                        .ForMember(eim => eim.Date, opt => opt.MapFrom(e => ((DateTime)e.Date).ToString("dddd, dd MMMM yyyy HH:mm", 
-                            new CultureInfo("en-GB"))));
+                        .ForMember(eim => eim.Date, opt => opt.MapFrom(e => e.Date != null ? ((DateTime)e.Date).ToString("dddd, dd MMMM yyyy HH:mm", new CultureInfo("en-GB")) : ""));
 
                     autoMapperConfig.CreateMap<EventCreateModel, Event>()
                         .ForMember(e => e.Participants, opt => opt.MapFrom(ecm => ecm.Participants != null ? string.Join(",", ecm.Participants) : null));
