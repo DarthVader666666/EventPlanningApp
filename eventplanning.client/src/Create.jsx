@@ -23,7 +23,6 @@ const Create = () => {
   {
     e.preventDefault();
     const newEvent = {title, themeId, subThemeId, date, dressCode, participants, location, amountOfVacantPlaces};
-    console.log(newEvent)
     setIsPending(true);
     
     fetch('api/events/create/', 
@@ -37,7 +36,8 @@ const Create = () => {
         body: JSON.stringify(newEvent)
       }).then(() => setIsPending(false));
 
-      navigate('/');
+      navigate("/");
+      navigate(0);
   }
 
   return (

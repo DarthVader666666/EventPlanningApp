@@ -54,8 +54,7 @@ namespace EventPlanning.Api.Controllers
 
         [HttpPost]
         [Route("api/[controller]/create")]
-        [Authorize(Roles = "Admin")]
-        //[RequiresClaim("Admin", "true")]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Create([FromBody] EventCreateModel model)
         {
             try
@@ -68,7 +67,7 @@ namespace EventPlanning.Api.Controllers
                 return BadRequest("Error while creating event");
             }
 
-            return Ok("Event created");
+            return Redirect($"{_configuration["ClientUrl"]}/");
         }
 
         [HttpPost]

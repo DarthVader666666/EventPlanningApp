@@ -24,7 +24,7 @@ const Navbar = () => {
       <div className="links">
         <Link to="/">Home</Link>
         {
-          role == 'Admin' &&
+          (role == 'Admin' || role == 'User') &&
           <Link to="/create" className="create-button">New Event</Link>
         }
         <Link to="/login">{name ? name : "Log In"}</Link>
