@@ -45,11 +45,11 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.ConfigureAutomapper();
 
-var connectionString = builder.Configuration.GetConnectionString("EventDb");
-builder.Services.AddDbContext<EventPlanningDbContext>(options => options.UseSqlServer(connectionString));
-
 if (builder.Environment.IsDevelopment())
 {
+    var connectionString = builder.Configuration.GetConnectionString("EventDb");
+    builder.Services.AddDbContext<EventPlanningDbContext>(options => options.UseSqlServer(connectionString));
+
     builder.Services.AddScoped<IRepository<Event>, EventRepository>();
     builder.Services.AddScoped<IRepository<UserEvent>, UserEventRepository>();
     builder.Services.AddScoped<IRepository<User>, UserRepository>();
@@ -83,11 +83,10 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-//app.MapControllers();
-app.MapControllerRoute("default", "api/{controller}/{action}/{id}");
-
-//app.MapPost("events", () => Results.Ok())
-//    .RequireAuthorization("Admin");
+app.MapControllerRoute(
+    name: "default",
+    pattern: "api/{controller}/{action}/{id?}"
+    );
 
 app.MapFallbackToFile("/index.html");
 
