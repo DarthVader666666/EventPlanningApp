@@ -14,6 +14,12 @@ using EventPlanning.Bll.Services.JsonRepositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddLogging(logs =>
+{
+    logs.AddConsole();
+    logs.AddAzureWebAppDiagnostics();
+});
+
 builder.Services.AddCors(opts => opts.AddPolicy("AllowClient", policy =>
 policy.WithOrigins(builder.Configuration["ClientUrl"] ?? string.Empty)
     .AllowAnyHeader()
