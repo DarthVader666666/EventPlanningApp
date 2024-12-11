@@ -83,8 +83,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
-//app.MapControllerRoute("default", "api/{controller}/{action}");
+//app.MapControllers();
+app.MapControllerRoute("default", "api/{controller}/{action}/{id}");
 
 //app.MapPost("events", () => Results.Ok())
 //    .RequireAuthorization("Admin");

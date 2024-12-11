@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 const EventList = ( events ) => {
   return (
     <div className="event-list">
-      { events == [] ? events.map((event, index) => (
+      { events.events.length > 0 ? events.map((event, index) => (
         <div className="event-preview" key={index} >
           <Link to={`/${event.eventId}`}>
             <h2>{ event.title }</h2>

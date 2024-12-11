@@ -43,7 +43,7 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '^/eventplanningapp': {
+            '^/api': {
                 target,
                 secure: false
             }
