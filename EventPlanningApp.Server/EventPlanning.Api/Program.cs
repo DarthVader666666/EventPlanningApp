@@ -21,7 +21,7 @@ builder.Services.AddLogging(logs =>
 });
 
 builder.Services.AddCors(opts => opts.AddPolicy("AllowClient", policy =>
-policy.WithOrigins(builder.Configuration["ClientUrl"] ?? string.Empty)
+policy.WithOrigins(builder.Configuration["ClientUrl"] ?? throw new ArgumentNullException("No ClientUrl in configuration"))
     .AllowAnyHeader()
     .AllowAnyMethod()
     ));
@@ -40,10 +40,8 @@ policy.WithOrigins(builder.Configuration["ClientUrl"] ?? string.Empty)
 //    };
 //});
 
-builder.Services.AddAuthorization();
-
-builder.Services.AddControllers();
 builder.Services.ConfigureAutomapper();
+builder.Services.AddControllers();
 
 if (builder.Environment.IsDevelopment())
 {
@@ -77,9 +75,7 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseCors("AllowClient");
-
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 

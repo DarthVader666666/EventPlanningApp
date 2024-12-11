@@ -12,8 +12,8 @@ using EventPlanning.Api.Attributes;
 
 namespace EventPlanning.Api.Controllers
 {
-    [EnableCors("AllowClient")]
     [ApiController]
+    [EnableCors("AllowClient")]
     public class EventsController : ControllerBase
     {
         private readonly IRepository<Event> _eventRepository;
@@ -35,7 +35,7 @@ namespace EventPlanning.Api.Controllers
         }
 
         [HttpGet]
-        [Route("api/[controller]/")]
+        [Route("api/[controller]")]
         public async Task<IActionResult> Index()
         {
             var events = await _eventRepository.GetListAsync();
