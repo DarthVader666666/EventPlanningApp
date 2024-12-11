@@ -74,7 +74,7 @@ namespace EventPlanning.Api.Controllers
         [HttpPost]
         [Route("api/[controller]/participate")]
         //[Authorize(Roles = "User")]
-        public async Task<IActionResult> Participate(EventConfirm eventConfirmModel)
+        public async Task<IActionResult> Participate([FromBody] EventConfirm eventConfirmModel)
         {
             if (eventConfirmModel == null)
             {
@@ -100,7 +100,7 @@ namespace EventPlanning.Api.Controllers
             }
 
             var url = $"<button>" +
-                $"<a href='{_configuration["ClientUrl"]}/confirm/{userEvent.UserId}/{userEvent.EventId}' " +
+                $"<a href='{_configuration["ClientUrl"]}/api/events/confirm/{userEvent.UserId}/{userEvent.EventId}' " +
                 $"style=\"text-decoration: none; color: black\">" +
                 $"Confirm Participation" +
                 $"</a>" +
@@ -119,14 +119,14 @@ namespace EventPlanning.Api.Controllers
         }
 
         [HttpGet]
-        [Route("api/[controller]/{userId:int}/{eventId:int}")]
-        public async Task<IActionResult> Confirm(int? userId, int? eventId)
+        [Route("api/[controller]/confirm/{userId:int}/{eventId:int}")]
+        public async Task<IActionResult> Confirm([FromRoute] int userId, [FromRoute] int eventId)
         {
             var userEvent = await _userEventRepository.GetAsync(new Tuple<int?, int?>(userId, eventId));
 
             if (userEvent == null)
             {
-                return BadRequest("User or event not found");
+                return Redirect($"{_configuration["ClientUrl"]}/confirm/400");
             }
 
             userEvent.EmailConfirmed = true;
@@ -142,10 +142,10 @@ namespace EventPlanning.Api.Controllers
             }
             else
             {
-                return BadRequest("Event could not be updated");
+                return Redirect($"{_configuration["ClientUrl"]}/confirm/400");
             }
 
-            return Ok();
+            return Redirect($"{_configuration["ClientUrl"]}/confirm/200");
         }
     }
 }
