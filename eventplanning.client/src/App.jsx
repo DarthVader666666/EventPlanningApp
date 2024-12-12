@@ -1,5 +1,5 @@
 import Home from './Home.jsx';
-import Navbar from './Navbar.jsx';
+import Title from './Title.jsx';
 import LogIn from './Login.jsx';
 import Create from './Create.jsx';
 import Register from './Register.jsx';
@@ -14,7 +14,7 @@ function App() {
     return (
         <Router>
             <div className="App">
-                <Navbar/>
+                <Title/>
                 <div className="content">
                     <Routes>
                         <Route path="/" element={<Home/>}></Route>
