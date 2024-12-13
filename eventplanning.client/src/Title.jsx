@@ -24,7 +24,7 @@ const Title = () => {
         <h3 style={{padding: '3px'}}>{import.meta.env.MODE}</h3>
       </div>
 
-      <Menu noOverlay right width={'70%'} customBurgerIcon={<img src='public/menu_burger_icon.svg'/>}>
+      <Menu noOverlay right width={'70%'} customBurgerIcon={<img src='/menu_burger_icon.svg'/>}>
         <Navbar name={name} role={role}></Navbar>
       </Menu>
 
