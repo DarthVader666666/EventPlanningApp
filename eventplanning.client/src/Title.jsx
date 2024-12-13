@@ -24,12 +24,14 @@ const Title = () => {
         <h3 style={{padding: '3px'}}>{import.meta.env.MODE}</h3>
       </div>
 
-      <Menu>
-        <div class="hamburger">
-          <Navbar name={name} role={role}></Navbar>
-        </div>
+      <Menu noOverlay right width={'70%'} customBurgerIcon={<img src='public/menu_burger_icon.svg'/>}>
+        <Navbar name={name} role={role}></Navbar>
       </Menu>
-      
+
+      <div className="visible-navbar">
+        <Navbar name={name} role={role}></Navbar>
+      </div>
+
     </div>
   );
 }

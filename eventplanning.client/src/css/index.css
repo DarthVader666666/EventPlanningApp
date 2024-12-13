@@ -5,24 +5,31 @@
   font-family: "Quicksand";
   color: #333;
 }
+
 .navbar {
   padding-top: 15px;
+  display: flex;
 }
+
 h1 {
   color: #f1356d;
   padding-bottom: 5vh;
 }
+
 .navbar .links {
   margin-left: auto;
 }
+
 .navbar a {
   margin-left: 16px;
   text-decoration: none;
   padding: 6px;
 }
+
 .navbar a:hover {
   color: #a41a43;
 }
+
 .content {  
   width: fit-content;
   margin: 40px auto;
@@ -59,11 +66,13 @@ h1 {
 .event-preview:hover {
   box-shadow: 1px 3px 5px rgba(0,0,0,0.1);
 }
+
 .event-preview h2 {
   font-size: 20px;
   color: #f1356d;
   margin-bottom: 8px;
 }
+
 .event-preview a{
   text-decoration: none;
 }
@@ -73,9 +82,11 @@ h1 {
   color: #f1356d;
   margin-bottom: 10px;
 }
+
 .event-details div {
   margin: 20px 0;
 }
+
 .event-details button {
   background: #f1356d;
   color: #fff;
@@ -90,15 +101,18 @@ h1 {
   margin: 0 auto;
   text-align: center;
 }
+
 .create label {
   text-align: left;
   display: block;
 }
+
 .create h2 {
   font-size: 20px;
   color: #f1356d;
   margin-bottom: 30px;
 }
+
 .create input, .create textarea, .create select, .login input {
   width: 100%;
   padding: 6px 10px;
@@ -133,13 +147,48 @@ h1 {
   justify-content:space-around;
 }
 
+.bm-burger-button {
+  display: none;
+}
+
+.bm-menu {
+  display: none;
+}
+
 @keyframes load {
   from {
-
     transform: rotate(0deg);
   }
   to {
-
     transform: rotate(360deg);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .navbar {
+    flex-direction: column;
+  }
+
+  .bm-burger-button {
+    display: block;
+    position:absolute;
+    top: 18px;
+    right: 18px;
+    width: 62px;
+    height: 62px;
+  }
+
+  .bm-menu {
+    display: block;
+    background: #fff;  
+    border: 1px  #5a5a5a8a solid;
+  }
+
+  .visible-navbar {
+    display: none;
+  }
+
+  .bm-menu-wrap {
+    margin-top: 20%;
   }
 }
