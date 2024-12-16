@@ -99,7 +99,7 @@ namespace EventPlanning.Api.Controllers
             }
 
             var url = $"<button>" +
-                $"<a href='{_configuration["ClientUrl"]}/api/events/confirm/{userEvent.UserId}/{userEvent.EventId}' " +
+                $"<a href='{_configuration["ClientUrl"]}/api/events/confirm?userId={userEvent.UserId}&eventId={userEvent.EventId}&email={eventConfirmModel.Email}' " +
                 $"style=\"text-decoration: none; color: black\">" +
                 $"Confirm Participation" +
                 $"</a>" +

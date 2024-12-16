@@ -1,9 +1,7 @@
-import { useNavigate, useParams } from "react-router";
-import { useSearchParams } from "react-router";
-import { useParams } from "react-router";
+import { useNavigate, useSearchParams, useParams } from "react-router";
 
 const Confirm = () => {
-  const [searchParams] = useSearchParams();
+  //const [searchParams] = useSearchParams();
   const { status } = useParams();
   const navigate = useNavigate();
   const email = sessionStorage.getItem('user_name');

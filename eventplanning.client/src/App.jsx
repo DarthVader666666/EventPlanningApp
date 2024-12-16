@@ -22,7 +22,7 @@ function App() {
                         <Route path="/login" element={<LogIn/>}></Route>
                         <Route path="/register" element={<Register/>}></Route>
                         <Route path="/create" element={<Create/>}></Route>
-                        <Route path="/confirm/:userId/:eventId/:email" element={<Confirm/>}></Route>
+                        <Route path="/confirm/:status" element={<Confirm/>}></Route>
                     </Routes>
                 </div>
             </div>    
