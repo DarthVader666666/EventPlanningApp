@@ -72,7 +72,7 @@ namespace EventPlanning.Api.Controllers
 
         [HttpPost]
         [Route("api/[controller]/participate")]
-        //[Authorize(Roles = "User")]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Participate([FromBody] EventConfirm eventConfirmModel)
         {
             if (eventConfirmModel == null)
@@ -118,8 +118,8 @@ namespace EventPlanning.Api.Controllers
         }
 
         [HttpGet]
-        [Route("api/[controller]/confirm/{userId:int}/{eventId:int}")]
-        public async Task<IActionResult> Confirm([FromRoute] int userId, [FromRoute] int eventId)
+        [Route("api/[controller]/confirm")]
+        public async Task<IActionResult> Confirm([FromQuery] int userId, [FromQuery] int eventId, [FromQuery] string email)
         {
             var userEvent = await _userEventRepository.GetAsync(new Tuple<int?, int?>(userId, eventId));
 

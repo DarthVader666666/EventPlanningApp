@@ -1,12 +1,12 @@
 import { useNavigate, useParams } from "react-router";
-import useFetch from "./useFetch.jsx";
+import { useSearchParams } from "react-router";
+import { useParams } from "react-router";
 
 const Confirm = () => {
-  const { status } = useParams();  
+  const [searchParams] = useSearchParams();
+  const { status } = useParams();
   const navigate = useNavigate();
   const email = sessionStorage.getItem('user_name');
-
-  console.log(status + email)
 
   return (
     <div className="confirm">

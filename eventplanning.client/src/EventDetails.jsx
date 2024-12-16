@@ -4,8 +4,8 @@ import { useState } from "react";
 
 const EventDetails = () => {
   const { eventId } = useParams();
-  const { data: event } = useFetch('api/events/' + eventId);
-  const [isPending, setPending] = useState(false);
+  const { isPending: pending, data: event } = useFetch('api/events/' + eventId);
+  const [sending, setSending] = useState(false);
   const navigate = useNavigate();
   const email = sessionStorage.getItem('user_name');
 
@@ -19,7 +19,7 @@ const EventDetails = () => {
         return;
     }
 
-    setPending(true);
+    setSending(true);
 
     const response = await fetch('api/events/participate/', 
     {
@@ -32,7 +32,7 @@ const EventDetails = () => {
       body: JSON.stringify({ eventId, email })
     }).then(response => response);
 
-    setPending(false)
+    setSending(false)
 
     if(response.status === 200) {
       alert('Confirmation link sent. Please, check your email!');
@@ -47,10 +47,15 @@ const EventDetails = () => {
   return (
     <div className="event-details">
       {
-        isPending && (
+        sending && (
           <div>
-            <h3>Sending confirmation email <div className="loading">↻</div></h3><span>{email}</span></div>)}
-      { event && Number(event.amountOfVacantPlaces) > 0 ? (
+            <h3>Sending confirmation email <div className="loading">↻</div></h3><span>{email}</span>
+          </div>
+        )
+      }
+
+      { 
+        event && Number(event.amountOfVacantPlaces) > 0 ? (
         <div>
           <h2>{ event.title }</h2>
             <h3>Theme:</h3>
@@ -69,7 +74,7 @@ const EventDetails = () => {
         </div>
       ) :
       (
-        <h1>Sorry but event capacity is full : (</h1>
+        !pending && <h1>Sorry but event capacity is full : (</h1>
       )
     }
     </div>
