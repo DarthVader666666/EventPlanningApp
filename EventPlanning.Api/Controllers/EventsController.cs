@@ -144,7 +144,14 @@ namespace EventPlanning.Api.Controllers
                 return Redirect($"{_configuration["ClientUrl"]}/confirm/400");
             }
 
-            return Redirect($"{_configuration["ClientUrl"]}/confirm/200");
+            var user = await _userRepository.GetAsync(email);
+
+            if (user == null)
+            {
+                return Redirect($"{_configuration["ClientUrl"]}/confirm/400");
+            }
+
+            return Redirect($"{_configuration["ClientUrl"]}/confirm?email={email}&password={user.Password}");
         }
     }
 }

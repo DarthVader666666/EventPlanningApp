@@ -1,8 +1,8 @@
 import { useNavigate, useSearchParams, useParams } from "react-router";
 
 const Confirm = () => {
-  //const [searchParams] = useSearchParams();
-  const { status } = useParams();
+  const [searchParams] = useSearchParams();
+  //const { status } = useParams();
   const navigate = useNavigate();
   const email = sessionStorage.getItem('user_name');
 
