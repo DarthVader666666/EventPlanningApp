@@ -124,6 +124,7 @@ async Task MigrateSeedDatabase(IServiceScope? scope, bool jsonFileCreated)
         var userRoleCollection = dataStore.GetCollection<UserRole>();
         var themeCollection = dataStore.GetCollection<Theme>();
         var subThemeCollection = dataStore.GetCollection<SubTheme>();
+        var eventCollection = dataStore.GetCollection<Event>();
 
         if (userCollection.Find(user => user.Email == builder.Configuration["AdminEmail"]).Count() == 0)
         {
@@ -137,7 +138,10 @@ async Task MigrateSeedDatabase(IServiceScope? scope, bool jsonFileCreated)
             new () { ThemeId = 1, ThemeName = "Music" },
             new () { ThemeId = 2, ThemeName = "Sport" },
             new () { ThemeId = 3, ThemeName = "Conference" },
-            new () { ThemeId = 4, ThemeName = "Corporate Party" }
+            new () { ThemeId = 4, ThemeName = "Corporate Party" },
+            new () { ThemeId = 5, ThemeName = "Theater" },
+            new () { ThemeId = 6, ThemeName = "Art Exhibition" },
+
         });
 
         await subThemeCollection.InsertManyAsync(new List<SubTheme> {
@@ -149,7 +153,19 @@ async Task MigrateSeedDatabase(IServiceScope? scope, bool jsonFileCreated)
             new () { SubThemeId = 6, ThemeId = 2, SubThemeName = "Yoga class" },
             new () { SubThemeId = 7, ThemeId = 3, SubThemeName = "IT club" },
             new () { SubThemeId = 8, ThemeId = 3, SubThemeName = "Buisness coaching" },
-            new () { SubThemeId = 9, ThemeId = 3, SubThemeName = "Literature talks" }
+            new () { SubThemeId = 9, ThemeId = 3, SubThemeName = "Literature talks" },
+            new () { SubThemeId = 10, ThemeId = 4, SubThemeName = "Ballet" },
+            new () { SubThemeId = 11, ThemeId = 4, SubThemeName = "Opera" },
+            new () { SubThemeId = 12, ThemeId = 4, SubThemeName = "Conceptual performance" },
+            new () { SubThemeId = 13, ThemeId = 5, SubThemeName = "Modern Art" },
+            new () { SubThemeId = 14, ThemeId = 5, SubThemeName = "Paintings" },
+            new () { SubThemeId = 15, ThemeId = 5, SubThemeName = "Sculptures" }
         });
+
+        await eventCollection.InsertManyAsync(new List<Event> {
+            new() { EventId = 1, ThemeId = 1, SubThemeId = 1, Title = "Nirvana Tribute", Date = DateTime.Now + TimeSpan.FromDays(10), Location = "Minsk, RE:PUBLIC", Address = "vulica Prytyckaha 62", Participants = "Mutnae Voka, Gogo Band", AmountOfVacantPlaces = 600 },
+            new() { EventId = 2, ThemeId = 3, SubThemeId = 7, Title = "Syberry corp conference", Date = DateTime.Now + TimeSpan.FromDays(15), Location = "Minsk, Beijing Hotel", Address = "vulica Chyrvonaarmiejskaja 36", Participants = "A.Anovich, B.Berovich, Z.Zhydkivich", AmountOfVacantPlaces = 1000 },
+            new() { EventId = 3, ThemeId = 6, SubThemeId = 13, Title = "Conseptual Art Exhibition", Date = DateTime.Now + TimeSpan.FromDays(20), Location = "Minsk, National Arts Museum", Address = "vulica Lenina 20", Participants = "A.Bondar, B.Govnar, Z.Zhopsky" },
+        }); 
     }
 }
