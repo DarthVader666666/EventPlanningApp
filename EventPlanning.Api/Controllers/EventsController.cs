@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Logging;
 using Newtonsoft;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
@@ -91,7 +92,14 @@ namespace EventPlanning.Api.Controllers
                 return BadRequest("User not found");
             }
 
-            var userEvent = new UserEvent()
+            UserEvent userEvent = await _userEventRepository.GetAsync(new Tuple<int?, int?>(user.UserId, eventConfirmModel.EventId));
+
+            if (userEvent != null && (userEvent.EmailConfirmed ?? true))
+            {
+                return Ok(new { message = "You already participate in Event" });
+            }
+
+            userEvent = new UserEvent()
             {
                 UserId = (int)user.UserId!,
                 EventId = (int)eventConfirmModel.EventId!
@@ -113,7 +121,7 @@ namespace EventPlanning.Api.Controllers
 
             if (result?.Value.Status == EmailSendStatus.Succeeded)
             {
-                return Ok("Email sent");
+                return Ok(new { message = "Email sent" });
             }
             else
             {
@@ -125,11 +133,23 @@ namespace EventPlanning.Api.Controllers
         [Route("api/[controller]/confirm")]
         public async Task<IActionResult> Confirm([FromQuery] int userId, [FromQuery] int eventId, [FromQuery] string email)
         {
+            var user = await _userRepository.GetAsync(email);
+
+            if (user == null)
+            {
+                return Redirect($"{_configuration["ClientUrl"]}/confirm?success=false&message=User%20was%20not");
+            }
+
             var userEvent = await _userEventRepository.GetAsync(new Tuple<int?, int?>(userId, eventId));
 
             if (userEvent == null)
             {
-                return BadRequest("Event has not been binded to a User");
+                return Redirect($"{_configuration["ClientUrl"]}/confirm?success=false&message=User%20has%20not%20been%20binded%20to%20Event&email={email}&password={user.Password}");
+            }
+
+            if (userEvent.EmailConfirmed ?? false)
+            {
+                return Redirect($"{_configuration["ClientUrl"]}/confirm?success=false&message=User%20already%20participates%20in%20Event&email={email}&password={user.Password}");
             }
 
             userEvent.EmailConfirmed = true;
@@ -145,17 +165,10 @@ namespace EventPlanning.Api.Controllers
             }
             else
             {
-                return BadRequest("Event could not be updated");
+                return Redirect($"{_configuration["ClientUrl"]}/confirm?success=false&message=Event%20could%20not%20be%20updated");
             }
 
-            var user = await _userRepository.GetAsync(email);
-
-            if (user == null)
-            {
-                return BadRequest("User was not found");
-            }
-
-            return Redirect($"{_configuration["ClientUrl"]}/confirm?email={email}&password={user.Password}");
+            return Redirect($"{_configuration["ClientUrl"]}/confirm?success=true&email={email}&password={user.Password}");
         }
     }
 }

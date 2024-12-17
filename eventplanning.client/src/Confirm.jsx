@@ -35,12 +35,12 @@ const Confirm = () => {
   return (
     <div className="confirm">
         {
-            searchParams.get('email') ?
+            searchParams.get('success') === 'true' ?
             <article>
               <h2>Thank You! { email }</h2>
               <p>Confirmation approved!</p>
             </article> :
-            <h2>Something went wrong :(</h2>
+            <h2>{searchParams.get('message')}</h2>
         }
         {<button onClick={handleConfirm}>Home</button>}
     </div>
