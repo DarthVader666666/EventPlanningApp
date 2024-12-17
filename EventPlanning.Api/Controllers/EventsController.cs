@@ -4,10 +4,14 @@ using EventPlanning.Api.Models;
 using EventPlanning.Bll.Interfaces;
 using EventPlanning.Bll.Services;
 using EventPlanning.Data.Entities;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Newtonsoft;
+using Newtonsoft.Json;
+using System.Net.Http.Json;
 
 namespace EventPlanning.Api.Controllers
 {
@@ -125,7 +129,7 @@ namespace EventPlanning.Api.Controllers
 
             if (userEvent == null)
             {
-                return Redirect($"{_configuration["ClientUrl"]}/confirm/400");
+                return BadRequest("Event has not been binded to a User");
             }
 
             userEvent.EmailConfirmed = true;
@@ -141,14 +145,14 @@ namespace EventPlanning.Api.Controllers
             }
             else
             {
-                return Redirect($"{_configuration["ClientUrl"]}/confirm/400");
+                return BadRequest("Event could not be updated");
             }
 
             var user = await _userRepository.GetAsync(email);
 
             if (user == null)
             {
-                return Redirect($"{_configuration["ClientUrl"]}/confirm/400");
+                return BadRequest("User was not found");
             }
 
             return Redirect($"{_configuration["ClientUrl"]}/confirm?email={email}&password={user.Password}");

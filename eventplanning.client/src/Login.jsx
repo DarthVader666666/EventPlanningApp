@@ -45,7 +45,7 @@ const LogIn = () => {
                 })
         }
         
-        window.location.reload();
+        navigate(0);
     };
 
     const isLoggedIn = () => sessionStorage.getItem("user_name");

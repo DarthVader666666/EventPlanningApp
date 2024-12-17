@@ -45,6 +45,7 @@ const Register = () => {
         <div className="login">
             {
                 <form onSubmit={handleSubmit}>
+                    <h1>Register</h1>
                     <label>Email</label>
                     <input required type="text" value={email} onChange={(e) => setEmail(e.target.value)}></input>
                     <label>First Name</label>
