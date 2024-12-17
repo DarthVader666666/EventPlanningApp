@@ -39,7 +39,6 @@ const EventDetails = () => {
     {
       const body = await response.json()
       setMessage(body.message);
-      console.log(message);
       
       if(message == 'Email sent')
       {
