@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
-const Navbar = ({name, role}) => {
+const Navbar = ({name, role, closeSideBar}) => {
   return (
-    <div className="navbar">
+    <div onClick={closeSideBar} className="navbar">
       <Link to="/">Home</Link>
         {
           (role == 'Admin' || role == 'User') &&
