@@ -33,14 +33,14 @@ const EventDetails = () => {
       body: JSON.stringify({ eventId, email })
     }).then(response => response);
 
-    setSending(false)
+    setSending(false);
 
-    if(response.status === 200) 
+    if(response.status === 200)
     {
-      const body = await response.json()
+      const body = await response.json();
       setMessage(body.message);
       
-      if(message == 'Email sent')
+      if(body.message == 'Email sent')
       {
         alert('Confirmation link sent. Please, check your email!');
         navigate("/");
@@ -86,7 +86,7 @@ const EventDetails = () => {
             </div>
           ) :
           (
-            !pending && <h1>Sorry but event capacity is full : (</h1>
+            !pending && <h1>Sorry, but event capacity is full : (</h1>
           )
         ) : 
         <div>
