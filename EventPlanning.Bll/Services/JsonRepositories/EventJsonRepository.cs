@@ -27,26 +27,42 @@ namespace EventPlanning.Bll.Services.JsonRepositories
             return result ? item : null;
         }
 
-        public Task<Event?> DeleteAsync(object? id)
+        public async Task<Event?> DeleteAsync(object? id)
         {
-            throw new NotImplementedException();
+            var item = await GetAsync(id);
+
+            if (!await ExistsAsync(item))
+            { 
+                return null;
+            }
+
+            var result = _eventCollection.DeleteOne((int)id);
+            return result ? item : null;
         }
 
-        public Task<bool> ExistsAsync(Event item)
+        public Task<bool> ExistsAsync(Event? item)
         {
-            throw new NotImplementedException();
+            if (item == null)
+            {
+                return Task.FromResult(false);
+            }
+
+            return Task.FromResult(GetAsync(item.EventId) != null);
         }
 
-        public async Task<Event?> GetAsync(object? id)
+        public Task<Event?> GetAsync(object? id)
         {
             var eventItem = _eventCollection.AsQueryable().FirstOrDefault(x => x.EventId == (int?)id);
             var theme = _themeCollection.AsQueryable().FirstOrDefault(x => x.ThemeId == eventItem?.ThemeId);
             var subTheme = _subThemeCollection.AsQueryable().FirstOrDefault(x => x.ThemeId == theme?.ThemeId);
 
-            eventItem.Theme = theme;
-            eventItem.SubTheme = subTheme;
+            if (eventItem != null)
+            {
+                eventItem.Theme = theme;
+                eventItem.SubTheme = subTheme;
+            }            
 
-            return eventItem;
+            return Task.FromResult(eventItem);
         }
 
         public async Task<IEnumerable<Event?>> GetListAsync(object? id = null)

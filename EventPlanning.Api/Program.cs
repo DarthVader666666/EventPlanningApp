@@ -45,7 +45,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 builder.Services.ConfigureAutomapper();
 
-if (builder.Environment.IsDevelopment())
+if (!builder.Environment.IsDevelopment())
 {
     var connectionString = builder.Configuration.GetConnectionString("EventDb") ?? throw new ArgumentNullException("EventDb", "Connection string can't be null");
     builder.Services.AddDbContext<EventPlanningDbContext>(options => options.UseSqlServer(connectionString));
@@ -110,7 +110,7 @@ app.Run();
 
 async Task MigrateSeedDatabase(IServiceScope? scope, bool jsonFileCreated)
 {
-    if (builder.Environment.IsDevelopment())
+    if (!builder.Environment.IsDevelopment())
     {
         var dbContext = scope?.ServiceProvider.GetRequiredService<EventPlanningDbContext>();
         dbContext?.Database.Migrate();
@@ -153,13 +153,16 @@ async Task MigrateSeedDatabase(IServiceScope? scope, bool jsonFileCreated)
             new () { SubThemeId = 7, ThemeId = 3, SubThemeName = "IT club" },
             new () { SubThemeId = 8, ThemeId = 3, SubThemeName = "Buisness coaching" },
             new () { SubThemeId = 9, ThemeId = 3, SubThemeName = "Literature talks" },
-            new () { SubThemeId = 10, ThemeId = 4, SubThemeName = "Ballet" },
-            new () { SubThemeId = 11, ThemeId = 4, SubThemeName = "Opera" },
-            new () { SubThemeId = 12, ThemeId = 4, SubThemeName = "Conceptual performance" },
-            new () { SubThemeId = 13, ThemeId = 5, SubThemeName = "Modern Art" },
-            new () { SubThemeId = 14, ThemeId = 5, SubThemeName = "Paintings" },
-            new () { SubThemeId = 15, ThemeId = 5, SubThemeName = "Sculptures" }
-        });
+            new () { SubThemeId = 10, ThemeId = 4, SubThemeName = "Firm Anniversary" },
+            new () { SubThemeId = 11, ThemeId = 4, SubThemeName = "Employee Award" },
+            new () { SubThemeId = 12, ThemeId = 4, SubThemeName = "Other occasion" },
+            new () { SubThemeId = 13, ThemeId = 5, SubThemeName = "Ballet" },
+            new () { SubThemeId = 14, ThemeId = 5, SubThemeName = "Opera" },
+            new () { SubThemeId = 15, ThemeId = 5, SubThemeName = "Conceptual performance" },
+            new () { SubThemeId = 16, ThemeId = 6, SubThemeName = "Modern Art" },
+            new () { SubThemeId = 17, ThemeId = 6, SubThemeName = "Paintings" },
+            new () { SubThemeId = 18, ThemeId = 6, SubThemeName = "Sculptures" }
+            });
 
         await eventCollection.InsertManyAsync(new List<Event> {
             new() { EventId = 1, ThemeId = 1, SubThemeId = 1, Title = "Nirvana Tribute", Date = DateTime.Now + TimeSpan.FromDays(10), Location = "Minsk, RE:PUBLIC", Address = "vulica Prytyckaha 62", Participants = "Mutnae Voka, Gogo Band", AmountOfVacantPlaces = 600 },

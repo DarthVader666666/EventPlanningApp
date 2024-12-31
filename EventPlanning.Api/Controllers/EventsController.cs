@@ -75,6 +75,23 @@ namespace EventPlanning.Api.Controllers
             return Redirect($"{_configuration["ClientUrl"]}/");
         }
 
+        [HttpDelete]
+        [Route("api/[controller]/remove")]
+        [Authorize(Roles = "Admin, User")]
+        public async Task<IActionResult> Remove([FromBody] EventIndexModel model)
+        {
+            try
+            {
+                await _eventRepository.DeleteAsync(model.EventId);
+            }
+            catch (SqlException)
+            {
+                return BadRequest("Error while creating event");
+            }
+
+            return Redirect($"{_configuration["ClientUrl"]}/");
+        }
+
         [HttpPost]
         [Route("api/[controller]/participate")]
         [Authorize(Roles = "Admin, User")]

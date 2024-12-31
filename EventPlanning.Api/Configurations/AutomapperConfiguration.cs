@@ -13,6 +13,8 @@ namespace EventPlanning.Api.Configurations
             {
                 var config = new MapperConfiguration(autoMapperConfig =>
                 {
+                    autoMapperConfig.CreateMap<EventIndexModel, Event>();
+
                     autoMapperConfig.CreateMap<Event, EventIndexModel>()
                         .ForMember(eim => eim.ThemeName, opt => opt.MapFrom(e => e.Theme.ThemeName))
                         .ForMember(eim => eim.SubThemeName, opt => opt.MapFrom(e => e.SubTheme.SubThemeName))

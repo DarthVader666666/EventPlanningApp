@@ -7,6 +7,6 @@
         Task<TEntity?> CreateAsync(TEntity item);
         Task<TEntity?> UpdateAsync(TEntity item);
         Task<TEntity?> DeleteAsync(object? id);
-        Task<bool> ExistsAsync(TEntity item);
+        Task<bool> ExistsAsync(TEntity? item);
     }
 }
