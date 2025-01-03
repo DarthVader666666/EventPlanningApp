@@ -44,6 +44,15 @@ h1 {
   place-content: center;
 }
 
+.event-list span {
+  font-size: 2rem;
+  cursor: pointer
+}
+
+.event-list span:hover {
+  color: gray
+}
+
 .dress-code {
   display: flex;
   align-items: start;

@@ -14,8 +14,7 @@ const EventDetails = () => {
   {
     const token = sessionStorage.getItem('access_token');
 
-    if(email === null)
-    {
+    if(email === null) {
         navigate("/login");
         return;
     }

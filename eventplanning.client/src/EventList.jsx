@@ -1,8 +1,13 @@
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router";
+import { useState } from 'react';
 
 const EventList = ( events ) => {
 
   const token = sessionStorage.getItem("access_token");
+  const role = sessionStorage.getItem("role");
+  const navigate = useNavigate();
+  const [status, setStatus] = useState(200);
 
   const onEventDelete = function (eventItem) {
     fetch('api/events/remove', 
@@ -15,7 +20,18 @@ const EventList = ( events ) => {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token
         },
-      });
+      }).then(response => setStatus(response.status));
+
+      if(status === 200) {
+        navigate("/");
+        navigate(0);
+      }
+
+      if(status === 401) {
+        sessionStorage.clear();
+        navigate("/login");
+        navigate(0);
+      }
   }
 
   return (    
@@ -23,9 +39,14 @@ const EventList = ( events ) => {
       { events.events.length == 0 ? <h1>Event List Is Empty</h1>
       : events.events.map((eventItem, index) => (
         <div className="event-preview" key={index} >
-          <div style={{textAlign: 'right', height: '1rem'}}>
-            <span onClick={() => onEventDelete(eventItem)} style={{fontSize: '2rem'}}>&times;</span>
-          </div>
+          {
+            role === "Admin" 
+            ? <div style={{textAlign: 'end', height: '1rem'}}>
+                <span onClick={() => onEventDelete(eventItem)}>&times;</span>
+              </div>
+            : <div></div>            
+          }
+          
           <div>
             <Link to={`/${eventItem.eventId}`}>
               <h2>{ eventItem.title }</h2>

@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const useFetch = (url, method, body) => {
   const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState(null);
   const [status, setStatus] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = sessionStorage.getItem("access_token");
@@ -24,7 +26,7 @@ const useFetch = (url, method, body) => {
           if(res.status === 401)
           {
             sessionStorage.clear();
-            throw Error('You are not authorized.');
+            navigate("/login");
           }
 
           if (!res.ok) { // error coming back from server

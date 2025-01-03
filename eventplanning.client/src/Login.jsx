@@ -11,12 +11,10 @@ const LogIn = () => {
     {
         e.preventDefault();
 
-        if(isLoggedIn())
-        {
+        if(isLoggedIn()) {
             sessionStorage.clear();
         }
-        else
-        {
+        else {
             await fetch('api/authorization/login',
                 {
                     body: JSON.stringify({ email, password }),

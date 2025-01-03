@@ -13,7 +13,7 @@ const Create = () => {
   const [participants, setParticipants] = useState([]);
   const [dressCode, setDressCode] = useState('false');
   const [amountOfVacantPlaces, setAmountOfVacantPlaces] = useState(0);
-
+  const [status, setStatus] = useState(200);
   const [isPending, setIsPending] = useState(false);
   const navigate = useNavigate();
 
@@ -34,10 +34,21 @@ const Create = () => {
           "Authorization": "Bearer " + token
         },
         body: JSON.stringify(newEvent)
-      }).then(() => setIsPending(false));
+      }).then(response => {
+        setStatus(response.status);
+        setIsPending(false);
+      });
 
-      navigate("/");
-      navigate(0);
+      if(status === 200) {
+        navigate("/");
+        navigate(0);
+      }
+
+      if(status === 401) {
+        sessionStorage.clear();
+        navigate("/login");
+        navigate(0);
+      }
   }
 
   return (

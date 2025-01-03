@@ -27,7 +27,7 @@ namespace EventPlanning.Bll.Services.JsonRepositories
             return result ? item : null;
         }
 
-        public async Task<Event?> DeleteAsync(object? id)
+        public async Task<Event?> DeleteAsync(object id)
         {
             var item = await GetAsync(id);
 
@@ -36,7 +36,7 @@ namespace EventPlanning.Bll.Services.JsonRepositories
                 return null;
             }
 
-            var result = _eventCollection.DeleteOne((int)id);
+            var result = await _eventCollection.DeleteOneAsync(x => x.EventId == (int)id);
             return result ? item : null;
         }
 

@@ -4,15 +4,9 @@ using EventPlanning.Api.Models;
 using EventPlanning.Bll.Interfaces;
 using EventPlanning.Bll.Services;
 using EventPlanning.Data.Entities;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Logging;
-using Newtonsoft;
-using Newtonsoft.Json;
-using System.Net.Http.Json;
 
 namespace EventPlanning.Api.Controllers
 {
@@ -59,37 +53,47 @@ namespace EventPlanning.Api.Controllers
 
         [HttpPost]
         [Route("api/[controller]/create")]
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] EventCreateModel model)
         {
             try
             {
                 var newEvent = _mapper.Map<EventCreateModel, Event>(model);
-                await _eventRepository.CreateAsync(newEvent);
+                var createdEvent = await _eventRepository.CreateAsync(newEvent);
+
+                if (createdEvent == null)
+                {
+                    return BadRequest("Error creating event");
+                }
             }
-            catch (SqlException)
+            catch (Exception)
             {
-                return BadRequest("Error while creating event");
+                return BadRequest("Error creating event");
             }
 
-            return Redirect($"{_configuration["ClientUrl"]}/");
+            return Ok("Event created successfully");
         }
 
         [HttpDelete]
         [Route("api/[controller]/remove")]
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Remove([FromBody] EventIndexModel model)
         {
             try
             {
-                await _eventRepository.DeleteAsync(model.EventId);
+                var deletedEvent = await _eventRepository.DeleteAsync(model.EventId);
+
+                if (deletedEvent == null)
+                {
+                    return BadRequest("Error deleting event");
+                }
             }
-            catch (SqlException)
+            catch (Exception)
             {
-                return BadRequest("Error while creating event");
+                return BadRequest("Error deleteing Event");
             }
 
-            return Redirect($"{_configuration["ClientUrl"]}/");
+            return Ok("Event deleted successfully");
         }
 
         [HttpPost]
