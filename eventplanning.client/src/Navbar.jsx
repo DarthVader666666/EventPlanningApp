@@ -5,7 +5,7 @@ const Navbar = ({name, role, closeSideBar}) => {
     <div onClick={closeSideBar} className="navbar">
       <Link to="/">Home</Link>
         {
-          (role == 'Admin' || role == 'User') &&
+          (role == 'Admin') &&
           <Link to="/create" className="create-button">New Event</Link>
         }
         <Link to="/login">{name ? name : "Log In"}</Link>
