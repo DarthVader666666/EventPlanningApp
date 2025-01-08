@@ -10,6 +10,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using EventPlanning.Api.Configurations;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 
 var jsonFileCreated = false;
 var builder = WebApplication.CreateBuilder(args);
@@ -43,7 +46,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
+//builder.Services.AddDataProtection()
+//       .UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration()
+//       {
+//           EncryptionAlgorithm = EncryptionAlgorithm.AES_256_GCM
+//       });
+
 builder.Services.ConfigureAutomapper();
+builder.Services.AddScoped<CryptoService>();
 
 if (builder.Environment.IsDevelopment())
 {
@@ -110,7 +120,7 @@ app.Run();
 
 async Task MigrateSeedDatabase(IServiceScope? scope, bool jsonFileCreated)
 {
-    if (builder.Environment.IsDevelopment())
+    if (builder!.Environment.IsDevelopment())
     {
         var dbContext = scope?.ServiceProvider.GetRequiredService<EventPlanningDbContext>();
         dbContext?.Database.Migrate();
@@ -118,6 +128,7 @@ async Task MigrateSeedDatabase(IServiceScope? scope, bool jsonFileCreated)
     else if (jsonFileCreated)
     {
         var dataStore = scope?.ServiceProvider.GetRequiredService<DataStore>() ?? throw new ArgumentNullException("Could not get DataStore from DI");
+        var cryptoService = scope?.ServiceProvider.GetService<CryptoService>() ?? throw new ArgumentNullException("Could not get CryptoService from DI");
 
         var userCollection = dataStore.GetCollection<User>();
         var roleCollection = dataStore.GetCollection<Role>();
@@ -126,9 +137,12 @@ async Task MigrateSeedDatabase(IServiceScope? scope, bool jsonFileCreated)
         var subThemeCollection = dataStore.GetCollection<SubTheme>();
         var eventCollection = dataStore.GetCollection<Event>();
 
-        if (userCollection.Find(user => user.Email == builder.Configuration["AdminEmail"]).Count() == 0)
+        var adminEmail = cryptoService.Encrypt(builder.Configuration["AdminEmail"] ?? throw new ArgumentNullException("AdminEmail is null."));
+        var adminPassword = cryptoService.Encrypt(builder.Configuration["AdminPassword"] ?? throw new ArgumentNullException("AdminPassword is null."));
+
+        if (userCollection.Find(user => user.Email == adminEmail).Count() == 0)
         {
-            await userCollection.InsertOneAsync(new User { UserId = 1, Email = builder.Configuration["AdminEmail"], Password = builder.Configuration["AdminPassword"] });
+            await userCollection.InsertOneAsync(new User { UserId = 1, Email = adminEmail, Password = adminPassword });
             await roleCollection.InsertOneAsync(new Role { RoleId = 1, RoleName = "Admin" });
             await roleCollection.InsertOneAsync(new Role { RoleId = 2, RoleName = "User" });
             await userRoleCollection.InsertOneAsync(new UserRole { RoleId = 1, UserId = 1 });

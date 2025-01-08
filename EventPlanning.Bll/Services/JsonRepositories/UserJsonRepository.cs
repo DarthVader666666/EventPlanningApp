@@ -8,12 +8,14 @@ namespace EventPlanning.Bll.Services.JsonRepositories
     {
         private readonly IDocumentCollection<User> _userCollection;
         private readonly IDocumentCollection<UserRole> _userRoleCollection;
+        private readonly CryptoService _cryptoService;
         private int nextUserId;
 
-        public UserJsonRepository(DataStore dataStore)
+        public UserJsonRepository(DataStore dataStore, CryptoService cryptoService)
         {
             _userCollection = dataStore.GetCollection<User>();
             _userRoleCollection = dataStore.GetCollection<UserRole>();
+            _cryptoService = cryptoService;
 
             var collection = _userCollection.AsQueryable();
             nextUserId = !collection.Any() ? 1 : collection.Max(x => x.UserId) + 1;
@@ -57,11 +59,22 @@ namespace EventPlanning.Bll.Services.JsonRepositories
                 return Task.FromResult<User?>(null);
             }
 
+            string? email = null;
+            int? id = null;
             var users = _userCollection.AsQueryable();
 
-            return Task.Run(() => users.Any()
-                ? users.FirstOrDefault(x => IdOrEmail is string && ((string?)IdOrEmail!).Contains('@') ? x.Email == (string?)IdOrEmail : x.UserId == (int?)IdOrEmail)
-                : null);
+            if (IdOrEmail is string && users.Any())
+            {
+                email = (string?)IdOrEmail!;
+                return Task.Run(() => users.FirstOrDefault(x => x.Email == email));
+            }
+            else if (IdOrEmail is int)
+            {
+                id = (int?)IdOrEmail;
+                return Task.Run(() => users.FirstOrDefault(x => x.UserId == id));
+            }
+
+            return Task.FromResult<User?>(null);
         }
 
         public Task<IEnumerable<User?>> GetListAsync(object? id = null)

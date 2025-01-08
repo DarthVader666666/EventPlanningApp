@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using EventPlanning.Bll.Services;
 
 namespace EventPlanning.Api.Controllers
 {
@@ -19,15 +20,17 @@ namespace EventPlanning.Api.Controllers
         private readonly IRepository<Role> _roleRepository;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
+        private readonly CryptoService _cryptoService;
 
         public AuthorizationController(
             IRepository<User> userRepository, IRepository<Role> roleRepository, IMapper mapper, 
-            IConfiguration configuration)
+            IConfiguration configuration, CryptoService cryptoService)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _mapper = mapper;
             _configuration = configuration;
+            _cryptoService = cryptoService;
         }
 
         [HttpPost]
@@ -59,7 +62,7 @@ namespace EventPlanning.Api.Controllers
             var response = new
             {
                 access_token = encodedJwt,
-                user_name = identity.Name,
+                user_name = _cryptoService.Decrypt(identity.Name),
                 role = identity.RoleClaimType
             };
 
@@ -70,7 +73,10 @@ namespace EventPlanning.Api.Controllers
         [Route("api/[controller]/register")]
         public async Task<IActionResult> Register([FromBody] UserRegisterModel userRegister)
         {
-            if (await DoesUserExist(userRegister?.Email))
+            userRegister.Password = _cryptoService.Encrypt(userRegister.Password ?? throw new ArgumentException("Password is null"));
+            userRegister.Email =  _cryptoService.Encrypt(userRegister.Email ?? throw new ArgumentException("Email is null"));
+
+            if (await DoesUserExist(userRegister.Email))
             {
                 return BadRequest(new { errorText = "User with this email already exists." });
             }
@@ -88,7 +94,7 @@ namespace EventPlanning.Api.Controllers
 
         private async Task<ClaimsIdentity?> GetIdentity(UserLogInModel userLogIn)
         {
-            var user = await _userRepository.GetAsync(userLogIn.Email);
+            var user = await _userRepository.GetAsync(_cryptoService.Encrypt(userLogIn.Email ?? throw new ArgumentException("Email is null")));
 
             if (user != null)
             {
