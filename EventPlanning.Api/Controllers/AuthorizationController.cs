@@ -41,8 +41,7 @@ namespace EventPlanning.Api.Controllers
 
             if (!string.IsNullOrEmpty(jwtToken))
             {
-                var handler = new JwtSecurityTokenHandler();
-                var jwtSecurityToken = handler.ReadJwtToken(jwtToken);
+                var jwtSecurityToken = new JwtSecurityTokenHandler().ReadJwtToken(jwtToken);
                 var user_name = jwtSecurityToken.Claims.FirstOrDefault(x => x.Type.Contains("identity/claims/name")).Value;
                 var role = jwtSecurityToken.Claims.FirstOrDefault(x => x.Type.Contains("identity/claims/role")).Value;
                 var user = await _userRepository.GetAsync(user_name);

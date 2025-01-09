@@ -177,6 +177,7 @@ namespace EventPlanning.Api.Controllers
                 return Redirect($"{_configuration["ClientUrl"]}/confirm?success=false&message=User%20already%20participates%20in%20Event");
             }
 
+
             userEvent.EmailConfirmed = true;
             await _userEventRepository.UpdateAsync(userEvent);
 
