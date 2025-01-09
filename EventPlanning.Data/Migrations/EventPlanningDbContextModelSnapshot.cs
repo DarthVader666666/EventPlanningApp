@@ -63,7 +63,7 @@ namespace EventPlanning.Data.Migrations
 
                     b.HasIndex("ThemeId");
 
-                    b.ToTable("Events");
+                    b.ToTable("Events", (string)null);
                 });
 
             modelBuilder.Entity("EventPlanning.Data.Entities.Location", b =>
@@ -79,7 +79,7 @@ namespace EventPlanning.Data.Migrations
 
                     b.HasKey("LocationId");
 
-                    b.ToTable("Locations");
+                    b.ToTable("Locations", (string)null);
                 });
 
             modelBuilder.Entity("EventPlanning.Data.Entities.Participant", b =>
@@ -100,7 +100,7 @@ namespace EventPlanning.Data.Migrations
 
                     b.HasIndex("ThemeId");
 
-                    b.ToTable("Participants");
+                    b.ToTable("Participants", (string)null);
                 });
 
             modelBuilder.Entity("EventPlanning.Data.Entities.ParticipantEvent", b =>
@@ -113,7 +113,7 @@ namespace EventPlanning.Data.Migrations
 
                     b.HasKey("EventId", "ParticipantId");
 
-                    b.ToTable("ParticipantEvents");
+                    b.ToTable("ParticipantEvents", (string)null);
                 });
 
             modelBuilder.Entity("EventPlanning.Data.Entities.Role", b =>
@@ -129,7 +129,7 @@ namespace EventPlanning.Data.Migrations
 
                     b.HasKey("RoleId");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
 
                     b.HasData(
                         new
@@ -162,7 +162,7 @@ namespace EventPlanning.Data.Migrations
 
                     b.HasIndex("ThemeId");
 
-                    b.ToTable("SubThemes");
+                    b.ToTable("SubThemes", (string)null);
                 });
 
             modelBuilder.Entity("EventPlanning.Data.Entities.Theme", b =>
@@ -178,7 +178,7 @@ namespace EventPlanning.Data.Migrations
 
                     b.HasKey("ThemeId");
 
-                    b.ToTable("Themes");
+                    b.ToTable("Themes", (string)null);
                 });
 
             modelBuilder.Entity("EventPlanning.Data.Entities.User", b =>
@@ -207,16 +207,16 @@ namespace EventPlanning.Data.Migrations
                         .IsUnique()
                         .HasFilter("[Email] IS NOT NULL");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasData(
                         new
                         {
                             UserId = 1,
-                            Email = "rumyancer@gmail.com",
+                            Email = "htyfK1Yb17OD0B58K1JF3ENX/trqoSLEs/Ol0tOcXnU=",
                             FirstName = "Vadzim",
                             LastName = "Rumiantsau",
-                            Password = "Haemorr_8421"
+                            Password = "3/Sxv99jIJErej2gCXkndw=="
                         });
                 });
 
@@ -233,7 +233,7 @@ namespace EventPlanning.Data.Migrations
 
                     b.HasKey("EventId", "UserId");
 
-                    b.ToTable("UserEvents");
+                    b.ToTable("UserEvents", (string)null);
                 });
 
             modelBuilder.Entity("EventPlanning.Data.Entities.UserRole", b =>
@@ -246,7 +246,7 @@ namespace EventPlanning.Data.Migrations
 
                     b.HasKey("UserId", "RoleId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UserRoles", (string)null);
 
                     b.HasData(
                         new

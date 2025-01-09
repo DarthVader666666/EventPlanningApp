@@ -216,10 +216,10 @@ namespace EventPlanning.Data.Migrations
                         new
                         {
                             UserId = 1,
-                            Email = "rumyancer@gmail.com",
+                            Email = "htyfK1Yb17OD0B58K1JF3ENX/trqoSLEs/Ol0tOcXnU=",
                             FirstName = "Vadzim",
                             LastName = "Rumiantsau",
-                            Password = "Haemorr_8421"
+                            Password = "3/Sxv99jIJErej2gCXkndw=="
                         });
                 });
 
