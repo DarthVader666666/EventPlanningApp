@@ -37,6 +37,29 @@ namespace EventPlanning.Api.Controllers
         [Route("api/[controller]/[action]")]
         public async Task<IActionResult> LogIn([FromBody] UserLogInModel userLogIn)
         {
+            var jwtToken = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            if (!string.IsNullOrEmpty(jwtToken))
+            {
+                var handler = new JwtSecurityTokenHandler();
+                var jwtSecurityToken = handler.ReadJwtToken(jwtToken);
+                var user_name = jwtSecurityToken.Claims.FirstOrDefault(x => x.Type.Contains("identity/claims/name")).Value;
+                var role = jwtSecurityToken.Claims.FirstOrDefault(x => x.Type.Contains("identity/claims/role")).Value;
+                var user = await _userRepository.GetAsync(user_name);
+
+                if (user == null) 
+                {
+                    NotFound(new { errorText = "User does not exist." });
+                }
+
+                return Ok(new
+                {
+                    access_token = jwtToken,
+                    user_name = _cryptoService.Decrypt(user_name),
+                    role
+                });
+            }
+
             var identity = await GetIdentity(userLogIn);
 
             if (identity == null)
@@ -51,20 +74,22 @@ namespace EventPlanning.Api.Controllers
                     audience: "Test",
                     notBefore: now,
                     claims: identity.Claims,
-                    expires: now.Add(TimeSpan.FromMinutes(10d)),
+                    expires: now.Add(TimeSpan.FromMinutes(20d)),
                     signingCredentials: new SigningCredentials(
                         new SymmetricSecurityKey(
                             Encoding.UTF8.GetBytes(_configuration["SecurityKey"] ?? throw new ArgumentNullException("SecurityKey", "SecurityKey can't be null"))), SecurityAlgorithms.HmacSha256)
                     );
 
-            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-             
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);            
+
             var response = new
             {
                 access_token = encodedJwt,
                 user_name = _cryptoService.Decrypt(identity.Name),
                 role = identity.RoleClaimType
             };
+
+            HttpContext.Session.SetString("access_token", response.access_token);
 
             return Ok(response);
         }
@@ -96,7 +121,7 @@ namespace EventPlanning.Api.Controllers
         {
             var user = await _userRepository.GetAsync(_cryptoService.Encrypt(userLogIn.Email ?? throw new ArgumentException("Email is null")));
 
-            if (user != null)
+            if (user != null && user.Password == _cryptoService.Encrypt(userLogIn.Password))
             {
                 var roles = await _roleRepository.GetListAsync(user.UserId);
                 var roleType = string.Join(", ", roles.Select(x => x?.RoleName));

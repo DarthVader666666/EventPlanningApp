@@ -55,12 +55,21 @@ namespace EventPlanning.Bll.Services.SqlRepositories
                 return Task.FromResult<User?>(null);
             }
 
-            var user = _dbContext.Users.Any()
-                ? _dbContext.Users.FirstOrDefault(x =>
-                IdOrEmail is string && ((string?)IdOrEmail!).Contains('@') ? x.Email == (string?)IdOrEmail : x.UserId == (int?)IdOrEmail)
-                : null;
+            string? email = null;
+            int? id = null;
 
-            return Task.Run(() => user);
+            if (IdOrEmail is string && _dbContext.Users.Any())
+            {
+                email = (string?)IdOrEmail!;
+                return Task.Run(() => _dbContext.Users.FirstOrDefault(x => x.Email == email));
+            }
+            else if (IdOrEmail is int)
+            {
+                id = (int?)IdOrEmail;
+                return Task.Run(() => _dbContext.Users.FirstOrDefault(x => x.UserId == id));
+            }
+
+            return Task.FromResult<User?>(null);
         }
 
         public Task<IEnumerable<User?>> GetListAsync(object? id)

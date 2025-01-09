@@ -10,9 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using EventPlanning.Api.Configurations;
-using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
-using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 
 var jsonFileCreated = false;
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +28,12 @@ builder.Services.AddCors(opts => opts.AddPolicy("AllowClient", policy =>
     .AllowAnyMethod()
     .AllowAnyHeader())
 );
+
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options => {
+    options.IdleTimeout = TimeSpan.FromMinutes(20);
+});
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
@@ -103,6 +106,7 @@ await MigrateSeedDatabase(scope, jsonFileCreated);
 var app = builder?.Build();
 
 app.UseCors("AllowClient");
+app.UseSession();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseHttpsRedirection();

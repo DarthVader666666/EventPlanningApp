@@ -1,5 +1,4 @@
-﻿using EventPlanning.Bll.Enums;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -14,56 +13,39 @@ namespace EventPlanning.Bll.Services
         public CryptoService(IConfiguration configuration)
         {
             _configuration = configuration;
-            Key = Encoding.UTF8.GetBytes(_configuration["EncryptionKey"] ?? throw new ArgumentNullException("EncryptionKey is null"));
-            IV = Encoding.UTF8.GetBytes(_configuration["IV"] ?? throw new ArgumentNullException("IV is null"));
+            Key = Encoding.UTF8.GetBytes(_configuration["AesKey"] ?? throw new ArgumentNullException("AesKey is null"));
+            IV = Encoding.UTF8.GetBytes(_configuration["AesIV"] ?? throw new ArgumentNullException("IV is null"));
         }
 
-        public string Encrypt(string text)
-        {
-            return GetText(CryptType.Encrypt, text);
-        }
-
-        public string Decrypt(string text)
-        {
-            string res = null;
-
-            try
-            {
-                res = GetText(CryptType.Decrypt, text);
-            }
-            catch (Exception ex)
-            { 
-                
-            }
-
-            return res;
-        }
-
-        private string GetText(CryptType cryptType, string text)
+        public string Encrypt(string plainText)
         {
             using var aesAlg = Aes.Create();
-            //aesAlg.BlockSize = 128;
-
             aesAlg.Key = Key;
             aesAlg.IV = IV;
 
-            var crypt = cryptType switch
-            {
-                CryptType.Encrypt => aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV),
-                CryptType.Decrypt => aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV),
-                _ => throw new ArgumentException("Wrong CryptType.")
-            };
-
+            var encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+            
             using var memoryStream = new MemoryStream();
-            using (var cryptoStream = new CryptoStream(memoryStream, crypt, CryptoStreamMode.Write))
+            using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
             {
-                var bytes = Encoding.UTF8.GetBytes(text);
-                cryptoStream.Write(bytes);
+                cryptoStream.Write(Encoding.UTF8.GetBytes(plainText));
             }
 
-            var result = Convert.ToBase64String(memoryStream.ToArray());
+            return Convert.ToBase64String(memoryStream.ToArray());
+        }
 
-            return result;
+        public string Decrypt(string encryptedText)
+        {
+            using var aesAlg = Aes.Create();
+            aesAlg.Key = Key;
+            aesAlg.IV = IV;
+
+            var decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
+
+            using var memoryStream = new MemoryStream(Convert.FromBase64String(encryptedText));
+            using var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read);
+            using var streamReader = new StreamReader(cryptoStream);
+            return streamReader.ReadToEnd();
         }
     }
 }
