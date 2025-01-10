@@ -7,6 +7,7 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [sending, setSending] = useState(false);
     
     const navigate = useNavigate();
     
@@ -21,28 +22,54 @@ const Register = () => {
         }
 
         sessionStorage.clear();
+
+        setSending(true);
             
-            await fetch('api/authorization/register/',
+        const response = await fetch('api/authorization/register/',
+            {
+                body: JSON.stringify({ email, firstName, lastName, password }),
+                headers:
                 {
-                    body: JSON.stringify({ email, firstName, lastName, password }),
-                    headers:
-                    {
-                      "Content-Type": "application/json"
-                    },
-                    method: "POST"
-                })
-            .then(response => response.json())
-            .then(data => 
-                {
-                    sessionStorage.setItem("access_token", data.access_token);
-                    sessionStorage.setItem("user_name", data.user_name);
-                });
+                  "Content-Type": "application/json"
+                },
+                method: "POST"
+            });
+
+            setSending(false);
+
+            console.log(response)
+
+            if(response.status === 200)
+            {
+              const body = await response.json();
+            
+              if(body.message == 'Email sent')
+              {
+                alert('Registration link sent. Please, check your email!');
+                navigate("/");
+                navigate(0);
+              }
+            }
+            else
+            {
+              alert('Something went wrong!');
+              navigate("/");
+              navigate(0);
+            }
         
         navigate("/");
+        navigate(0);
     };
 
     return (
         <div className="login">
+            {
+                sending && (
+                  <div>
+                    <h3>Sending confirmation email <div className="loading">↻</div></h3><span>{email}</span>
+                  </div>
+                )
+            }
             {
                 <form onSubmit={handleSubmit}>
                     <h1>Register</h1>
@@ -56,7 +83,9 @@ const Register = () => {
                     <input required type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
                     <label>Confirm Password</label>
                     <input required type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}></input>
-                    <button type="submit">Register</button>
+                    {
+                        !sending && (<button type="submit">Register</button>)
+                    }
                 </form>
             }
         </div>

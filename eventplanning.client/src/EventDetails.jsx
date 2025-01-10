@@ -43,12 +43,14 @@ const EventDetails = () => {
       {
         alert('Confirmation link sent. Please, check your email!');
         navigate("/");
+        navigate(0);
       }
     }
     else
     {
       alert('Something went wrong!');
       navigate("/");
+      navigate(0);
     }
   }
 
