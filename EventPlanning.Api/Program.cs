@@ -134,26 +134,31 @@ async Task MigrateSeedDatabase(IServiceScope? scope, bool jsonFileCreated)
     else if (jsonFileCreated)
     {
         var dataStore = scope?.ServiceProvider.GetRequiredService<DataStore>() ?? throw new ArgumentNullException("Could not get DataStore from DI");
+        await SeedJsonDb(dataStore, builder.Configuration);
+    }
+}
 
-        var userCollection = dataStore.GetCollection<User>();
-        var roleCollection = dataStore.GetCollection<Role>();
-        var userRoleCollection = dataStore.GetCollection<UserRole>();
-        var themeCollection = dataStore.GetCollection<Theme>();
-        var subThemeCollection = dataStore.GetCollection<SubTheme>();
-        var eventCollection = dataStore.GetCollection<Event>();
+async Task SeedJsonDb(DataStore dataStore, IConfiguration configuration)
+{
+    var userCollection = dataStore.GetCollection<User>();
+    var roleCollection = dataStore.GetCollection<Role>();
+    var userRoleCollection = dataStore.GetCollection<UserRole>();
+    var themeCollection = dataStore.GetCollection<Theme>();
+    var subThemeCollection = dataStore.GetCollection<SubTheme>();
+    var eventCollection = dataStore.GetCollection<Event>();
 
-        var adminEmail = builder.Configuration["AdminEmail"] ?? throw new ArgumentNullException("AdminEmail is null.");
-        var adminPassword = builder.Configuration["AdminPassword"] ?? throw new ArgumentNullException("AdminPassword is null.");
+    var adminEmail = configuration["AdminEmail"] ?? throw new ArgumentNullException("AdminEmail is null.");
+    var adminPassword = configuration["AdminPassword"] ?? throw new ArgumentNullException("AdminPassword is null.");
 
-        if (userCollection.Find(user => user.Email == adminEmail).Count() == 0)
-        {
-            await userCollection.InsertOneAsync(new User { UserId = 1, Email = adminEmail, Password = adminPassword });
-            await roleCollection.InsertOneAsync(new Role { RoleId = 1, RoleName = "Admin" });
-            await roleCollection.InsertOneAsync(new Role { RoleId = 2, RoleName = "User" });
-            await userRoleCollection.InsertOneAsync(new UserRole { RoleId = 1, UserId = 1 });
-        }
+    if (userCollection.Find(user => user.Email == adminEmail).Count() == 0)
+    {
+        await userCollection.InsertOneAsync(new User { UserId = 1, Email = adminEmail, Password = adminPassword });
+        await roleCollection.InsertOneAsync(new Role { RoleId = 1, RoleName = "Admin" });
+        await roleCollection.InsertOneAsync(new Role { RoleId = 2, RoleName = "User" });
+        await userRoleCollection.InsertOneAsync(new UserRole { RoleId = 1, UserId = 1 });
+    }
 
-        await themeCollection.InsertManyAsync(new List<Theme> { 
+    await themeCollection.InsertManyAsync(new List<Theme> {
             new () { ThemeId = 1, ThemeName = "Music" },
             new () { ThemeId = 2, ThemeName = "Sport" },
             new () { ThemeId = 3, ThemeName = "Conference" },
@@ -162,7 +167,7 @@ async Task MigrateSeedDatabase(IServiceScope? scope, bool jsonFileCreated)
             new () { ThemeId = 6, ThemeName = "Art Exhibition" }
         });
 
-        await subThemeCollection.InsertManyAsync(new List<SubTheme> {
+    await subThemeCollection.InsertManyAsync(new List<SubTheme> {
             new () { SubThemeId = 1, ThemeId = 1, SubThemeName = "Rock Fest" },
             new () { SubThemeId = 2, ThemeId = 1, SubThemeName = "Classic orchestra" },
             new () { SubThemeId = 3, ThemeId = 1, SubThemeName = "Blues band" },
@@ -183,10 +188,9 @@ async Task MigrateSeedDatabase(IServiceScope? scope, bool jsonFileCreated)
             new () { SubThemeId = 18, ThemeId = 6, SubThemeName = "Sculptures" }
             });
 
-        await eventCollection.InsertManyAsync(new List<Event> {
+    await eventCollection.InsertManyAsync(new List<Event> {
             new() { EventId = 1, ThemeId = 1, SubThemeId = 1, Title = "Nirvana Tribute", Date = DateTime.Now + TimeSpan.FromDays(10), Location = "Minsk, RE:PUBLIC", Address = "vulica Prytyckaha 62", Participants = "Mutnae Voka, Gogo Band", AmountOfVacantPlaces = 600 },
             new() { EventId = 2, ThemeId = 3, SubThemeId = 7, Title = "Syberry corp conference", Date = DateTime.Now + TimeSpan.FromDays(15), Location = "Minsk, Beijing Hotel", Address = "vulica Chyrvonaarmiejskaja 36", Participants = "A.Anovich, B.Berovich, Z.Zhydkivich", AmountOfVacantPlaces = 1000 },
             new() { EventId = 3, ThemeId = 6, SubThemeId = 13, Title = "Conseptual Art Exhibition", Date = DateTime.Now + TimeSpan.FromDays(20), Location = "Minsk, National Arts Museum", Address = "vulica Lenina 20", Participants = "A.Bondar, B.Govnar, Z.Zhopsky", AmountOfVacantPlaces = 200 },
-        }); 
-    }
+        });
 }
