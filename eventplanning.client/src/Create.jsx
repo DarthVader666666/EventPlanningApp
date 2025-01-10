@@ -70,7 +70,7 @@ const Create = () => {
         </div>
 
         <label>Vacant Places</label>
-          <input type="number" value={amountOfVacantPlaces} onChange={(e) => setAmountOfVacantPlaces(e.target.value)}></input>
+          <input type="number" min="1" value={amountOfVacantPlaces} onChange={(e) => setAmountOfVacantPlaces(e.target.value)}></input>
 
         <label>Theme</label>
         {
