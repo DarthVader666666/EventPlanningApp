@@ -18,7 +18,10 @@ namespace EventPlanning.Data.Migrations
                 $"INSERT INTO SubThemes (ThemeId, SubThemeName) VALUES (2, 'Yoga class')" +
                 $"INSERT INTO SubThemes (ThemeId, SubThemeName) VALUES (3, 'IT club')" +
                 $"INSERT INTO SubThemes (ThemeId, SubThemeName) VALUES (3, 'Buisness coaching')" +
-                $"INSERT INTO SubThemes (ThemeId, SubThemeName) VALUES (3, 'Literature talks')");
+                $"INSERT INTO SubThemes (ThemeId, SubThemeName) VALUES (3, 'Literature talks')" +
+                $"INSERT INTO SubThemes (ThemeId, SubThemeName) VALUES (4, 'Firm Anniversary')" +
+                $"INSERT INTO SubThemes (ThemeId, SubThemeName) VALUES (4, 'Employee Award')" +
+                $"INSERT INTO SubThemes (ThemeId, SubThemeName) VALUES (4, 'Other occasion')");
         }
 
         /// <inheritdoc />
