@@ -116,7 +116,7 @@ namespace EventPlanning.Api.Controllers
                 return BadRequest("User not found");
             }
 
-            UserEvent userEvent = await _userEventRepository.GetAsync(new Tuple<int?, int?>(user.UserId, eventConfirmModel.EventId));
+            var userEvent = await _userEventRepository.GetAsync(new Tuple<int?, int?>(user.UserId, eventConfirmModel.EventId));
 
             if (userEvent != null && (userEvent.EmailConfirmed ?? true))
             {

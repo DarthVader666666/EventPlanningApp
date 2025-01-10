@@ -31,7 +31,7 @@ namespace EventPlanning.Bll.Services.JsonRepositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> ExistsAsync(Role item)
+        public Task<bool> ExistsAsync(Role? item)
         {
             throw new NotImplementedException();
         }
@@ -41,10 +41,10 @@ namespace EventPlanning.Bll.Services.JsonRepositories
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Role>?> GetListAsync(object? userId)
+        public Task<IEnumerable<Role?>> GetListAsync(object? userId)
         {
-            return _userRoleCollection.AsQueryable().Where(x => x.UserId == (int?)userId)
-                .SelectMany(userRole => _roleCollection.AsQueryable().Where(role => userRole.RoleId == role.RoleId));
+            return Task.FromResult<IEnumerable<Role?>>(_userRoleCollection.AsQueryable().Where(x => x.UserId == (int?)userId)
+                .SelectMany(userRole => _roleCollection.AsQueryable().Where(role => userRole.RoleId == role.RoleId)));
         }
 
         public Task<Role?> UpdateAsync(Role item)

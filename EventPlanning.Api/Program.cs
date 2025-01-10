@@ -99,11 +99,13 @@ else
 
 builder.Services.AddScoped<EmailSender>();
 
-var provider = builder?.Services.BuildServiceProvider();
+#pragma warning disable ASP0000
+var provider = builder?.Services?.BuildServiceProvider();
+#pragma warning restore ASP0000
 using var scope = provider?.CreateScope();
 await MigrateSeedDatabase(scope, jsonFileCreated);
 
-var app = builder?.Build();
+var app = builder!.Build();
 
 app.UseCors("AllowClient");
 app.UseSession();

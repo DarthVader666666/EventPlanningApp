@@ -27,7 +27,7 @@ namespace EventPlanning.Bll.Services.JsonRepositories
             return result ? item : null;
         }
 
-        public async Task<Event?> DeleteAsync(object id)
+        public async Task<Event?> DeleteAsync(object? id)
         {
             var item = await GetAsync(id);
 
@@ -36,7 +36,7 @@ namespace EventPlanning.Bll.Services.JsonRepositories
                 return null;
             }
 
-            var result = await _eventCollection.DeleteOneAsync(x => x.EventId == (int)id);
+            var result = await _eventCollection.DeleteOneAsync(x => x.EventId == (int?)id);
             return result ? item : null;
         }
 
@@ -65,7 +65,7 @@ namespace EventPlanning.Bll.Services.JsonRepositories
             return Task.FromResult(eventItem);
         }
 
-        public async Task<IEnumerable<Event?>> GetListAsync(object? id = null)
+        public Task<IEnumerable<Event?>> GetListAsync(object? id)
         {
             var events = _eventCollection.AsQueryable().Select(e =>
             {
@@ -77,7 +77,7 @@ namespace EventPlanning.Bll.Services.JsonRepositories
                 return e;
             });
 
-            return events;
+            return Task.FromResult<IEnumerable<Event?>>(events);
         }
 
         public async Task<Event?> UpdateAsync(Event item)

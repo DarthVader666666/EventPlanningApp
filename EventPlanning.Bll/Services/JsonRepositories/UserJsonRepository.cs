@@ -35,7 +35,7 @@ namespace EventPlanning.Bll.Services.JsonRepositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> ExistsAsync(User item)
+        public Task<bool> ExistsAsync(User? item)
         {
             throw new NotImplementedException();
         }
@@ -77,9 +77,9 @@ namespace EventPlanning.Bll.Services.JsonRepositories
             return Task.FromResult<User?>(null);
         }
 
-        public Task<IEnumerable<User?>> GetListAsync(object? id = null)
+        public Task<IEnumerable<User?>> GetListAsync(object? id)
         {
-            return Task.Run(() => _userCollection.AsQueryable());
+            return Task.Run<IEnumerable<User?>>(_userCollection.AsQueryable);
         }
 
         public Task<User?> UpdateAsync(User item)

@@ -16,8 +16,8 @@ namespace EventPlanning.Api.Configurations
                     autoMapperConfig.CreateMap<EventIndexModel, Event>();
 
                     autoMapperConfig.CreateMap<Event, EventIndexModel>()
-                        .ForMember(eim => eim.ThemeName, opt => opt.MapFrom(e => e.Theme.ThemeName))
-                        .ForMember(eim => eim.SubThemeName, opt => opt.MapFrom(e => e.SubTheme.SubThemeName))
+                        .ForMember(eim => eim.ThemeName, opt => opt.MapFrom(e => e.Theme != null ? e.Theme.ThemeName : null))
+                        .ForMember(eim => eim.SubThemeName, opt => opt.MapFrom(e => e.SubTheme != null ? e.SubTheme.SubThemeName : null))
                         .ForMember(eim => eim.Date, opt => opt.MapFrom(e => e.Date != null ? ((DateTime)e.Date).ToString("dddd, dd MMMM yyyy HH:mm", new CultureInfo("en-GB")) : ""));
 
                     autoMapperConfig.CreateMap<EventCreateModel, Event>()
@@ -33,27 +33,27 @@ namespace EventPlanning.Api.Configurations
             });
         }
 
-        private static string[]? GetSubThemeNames(ICollection<SubTheme>? subThemes)
-        { 
-            if(subThemes.Any())
-            {
-                return null;
-            }
+        //private static string[]? GetSubThemeNames(ICollection<SubTheme>? subThemes)
+        //{ 
+        //    if(subThemes == null || subThemes.Count == 0)
+        //    {
+        //        return null;
+        //    }
 
-            IEnumerable<string?> GetNames()
-            {
-                foreach (var subTheme in subThemes!)
-                { 
-                    yield return subTheme?.SubThemeName;
-                }
-            }
+        //    IEnumerable<string?> GetNames()
+        //    {
+        //        foreach (var subTheme in subThemes!)
+        //        { 
+        //            yield return subTheme?.SubThemeName;
+        //        }
+        //    }
 
-            return GetNames().ToArray();
-        }
+        //    return GetNames().ToArray();
+        //}
 
         private static SubThemeIndexModel[]? GetSubThemes(ICollection<SubTheme>? subThemes)
         {
-            if (!subThemes.Any())
+            if (subThemes == null || subThemes.Count == 0)
             {
                 return null;
             }

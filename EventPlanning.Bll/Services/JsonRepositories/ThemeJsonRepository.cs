@@ -31,7 +31,7 @@ namespace EventPlanning.Bll.Services.JsonRepositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> ExistsAsync(Theme item)
+        public Task<bool> ExistsAsync(Theme? item)
         {
             throw new NotImplementedException();
         }

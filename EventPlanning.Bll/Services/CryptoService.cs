@@ -17,7 +17,7 @@ namespace EventPlanning.Bll.Services
             IV = Encoding.UTF8.GetBytes(_configuration["AesIV"] ?? throw new ArgumentNullException("IV is null"));
         }
 
-        public string Encrypt(string plainText)
+        public string Encrypt(string? plainText)
         {
             using var aesAlg = Aes.Create();
             aesAlg.Key = Key;
@@ -28,13 +28,13 @@ namespace EventPlanning.Bll.Services
             using var memoryStream = new MemoryStream();
             using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
             {
-                cryptoStream.Write(Encoding.UTF8.GetBytes(plainText));
+                cryptoStream.Write(Encoding.UTF8.GetBytes(plainText ?? string.Empty));
             }
 
             return Convert.ToBase64String(memoryStream.ToArray());
         }
 
-        public string Decrypt(string encryptedText)
+        public string Decrypt(string? encryptedText)
         {
             using var aesAlg = Aes.Create();
             aesAlg.Key = Key;
@@ -42,7 +42,7 @@ namespace EventPlanning.Bll.Services
 
             var decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
-            using var memoryStream = new MemoryStream(Convert.FromBase64String(encryptedText));
+            using var memoryStream = new MemoryStream(Convert.FromBase64String(encryptedText ?? string.Empty));
             using var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read);
             using var streamReader = new StreamReader(cryptoStream);
             return streamReader.ReadToEnd();

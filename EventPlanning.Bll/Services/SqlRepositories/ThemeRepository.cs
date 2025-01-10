@@ -24,7 +24,7 @@ namespace EventPlanning.Bll.Services.SqlRepositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> ExistsAsync(Theme item)
+        public Task<bool> ExistsAsync(Theme? item)
         {
             throw new NotImplementedException();
         }

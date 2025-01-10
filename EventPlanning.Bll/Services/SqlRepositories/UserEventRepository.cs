@@ -25,16 +25,16 @@ namespace EventPlanning.Bll.Services.SqlRepositories
             throw new NotImplementedException();
         }
 
-        public async Task<bool> ExistsAsync(UserEvent item)
+        public async Task<bool> ExistsAsync(UserEvent? item)
         {
-            return await GetAsync(new Tuple<int?, int?>(item.UserId, item.EventId)) != null;
+            return await GetAsync(new Tuple<int?, int?>(item?.UserId, item?.EventId)) != null;
         }
 
         public Task<UserEvent?> GetAsync(object? value)
         {
-            var tuple = (Tuple<int?, int?>)value;
+            var tuple = (Tuple<int?, int?>?)value;
 
-            var userEvent = _dbContext.UserEvents.FirstOrDefault(x => x.UserId == tuple.Item1 && x.EventId == tuple.Item2);
+            var userEvent = _dbContext.UserEvents.FirstOrDefault(x => (tuple != null) && (x.UserId == tuple.Item1) && (x.EventId == tuple.Item2));
 
             return Task.Run(() => userEvent);
         }

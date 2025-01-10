@@ -29,7 +29,7 @@ namespace EventPlanning.Bll.Services.SqlRepositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> ExistsAsync(User item)
+        public Task<bool> ExistsAsync(User? item)
         {
             throw new NotImplementedException();
         }

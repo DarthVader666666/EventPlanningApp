@@ -21,12 +21,22 @@ namespace EventPlanning.Bll.Services.SqlRepositories
             return item;
         }
 
-        public Task<Event?> DeleteAsync(object? id)
+        public async Task<Event?> DeleteAsync(object? id)
         {
-            throw new NotImplementedException();
+            var eventItem = _dbContext.Events.FirstOrDefault(e => e.EventId == (int)(id ?? 0));
+
+            if (eventItem == null)
+            {
+                return null;
+            }
+
+            _dbContext.Events.Remove(eventItem);
+            await _dbContext.SaveChangesAsync();
+
+            return eventItem;
         }
 
-        public Task<bool> ExistsAsync(Event item)
+        public Task<bool> ExistsAsync(Event? item)
         {
             throw new NotImplementedException();
         }

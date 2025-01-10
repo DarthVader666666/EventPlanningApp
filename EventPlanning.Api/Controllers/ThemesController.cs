@@ -27,7 +27,7 @@ namespace EventPlanning.Api.Controllers
         public async Task<IEnumerable<ThemeIndexModel>> Index()
         {
             var themes = await _themeRepository.GetListAsync();
-            var mappedThemes = _mapper.Map<IEnumerable<Theme>, IEnumerable<ThemeIndexModel>>(themes);
+            var mappedThemes = _mapper.Map<IEnumerable<Theme?>, IEnumerable<ThemeIndexModel>>(themes);
             return mappedThemes;
         }
     }
