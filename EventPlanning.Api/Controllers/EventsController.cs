@@ -1,5 +1,4 @@
 using AutoMapper;
-using Azure;
 using Azure.Communication.Email;
 using EventPlanning.Api.Models;
 using EventPlanning.Bll.Interfaces;
@@ -142,7 +141,7 @@ namespace EventPlanning.Api.Controllers
                 $"</a>" +
                 $"</button>";
 
-            var result = await _emailSender.SendEmailAsync(eventConfirmModel.Email ?? throw new ArgumentNullException("Email", "Email value is null"), "Thank you! Event participation confirmed!", url);
+            var result = await _emailSender.SendEmailAsync(eventConfirmModel.Email ?? throw new ArgumentNullException("Email", "Email value is null"), "Please, confirm event participation!", url);
 
             if (result?.Value.Status == EmailSendStatus.Succeeded)
             {

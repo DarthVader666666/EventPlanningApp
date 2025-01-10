@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using EventPlanning.Bll.Services;
+using Azure.Communication.Email;
 
 namespace EventPlanning.Api.Controllers
 {
@@ -21,16 +22,18 @@ namespace EventPlanning.Api.Controllers
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly CryptoService _cryptoService;
+        private readonly EmailSender _emailSender;
 
         public AuthorizationController(
             IRepository<User> userRepository, IRepository<Role> roleRepository, IMapper mapper, 
-            IConfiguration configuration, CryptoService cryptoService)
+            IConfiguration configuration, CryptoService cryptoService, EmailSender emailSender)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _mapper = mapper;
             _configuration = configuration;
             _cryptoService = cryptoService;
+            _emailSender = emailSender;
         }
 
         [HttpPost]
@@ -51,11 +54,11 @@ namespace EventPlanning.Api.Controllers
                     NotFound(new { errorText = "User does not exist." });
                 }
 
-                return Ok(new
+                return Ok(new LogInResponseModel
                 {
                     access_token = jwtToken,
                     user_name = _cryptoService.Decrypt(user_name),
-                    role
+                    role = role
                 });
             }
 
@@ -81,7 +84,7 @@ namespace EventPlanning.Api.Controllers
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);            
 
-            var response = new
+            var response = new LogInResponseModel
             {
                 access_token = encodedJwt,
                 user_name = _cryptoService.Decrypt(identity.Name),
@@ -97,23 +100,63 @@ namespace EventPlanning.Api.Controllers
         [Route("api/[controller]/register")]
         public async Task<IActionResult> Register([FromBody] UserRegisterModel userRegister)
         {
-            userRegister.Password = _cryptoService.Encrypt(userRegister.Password ?? throw new ArgumentException("Password is null"));
-            userRegister.Email =  _cryptoService.Encrypt(userRegister.Email ?? throw new ArgumentException("Email is null"));
+            if (userRegister.Password == null)
+            {
+                return BadRequest("Password is null");
+            }
 
-            if (await DoesUserExist(userRegister.Email))
+            if (userRegister.Email == null)
+            {
+                return BadRequest("Email is null");
+            }
+
+            if (await DoesUserExist(_cryptoService.Encrypt(userRegister.Email)))
             {
                 return BadRequest(new { errorText = "User with this email already exists." });
             }
 
-            var user = _mapper.Map<UserRegisterModel, User>(userRegister);
-            user = await _userRepository.CreateAsync(user);
+            var url = $"<button>" +
+                $"<a href='{_configuration["ClientUrl"]}/api/authorization/confirm?" +
+                $"encryptedEmail={_cryptoService.Encrypt(userRegister.Email)}&encryptedPassword={_cryptoService.Encrypt(userRegister.Password)}" +
+                $"&firstName={userRegister.FirstName}&lastName={userRegister.LastName}' " +
+                $"style=\"text-decoration: none; color: black\">" +
+                $"Confirm Registration" +
+                $"</a>" +
+                $"</button>";
+
+            var result = await _emailSender.SendEmailAsync(userRegister.Email, "Please, confirm Your registration", url);
+
+            if (result?.Value.Status == EmailSendStatus.Succeeded)
+            {
+                return Ok(new { message = "Email sent" });
+            }
+            else
+            {
+                return BadRequest("Error while sending email");
+            }            
+        }
+
+        [HttpGet]
+        [Route("api/[controller]/confirm")]
+        public async Task<IActionResult> Confirm([FromQuery] string encryptedEmail, [FromQuery] string encryptedPassword, [FromQuery] string firstName, [FromQuery] string lastName)
+        {
+            var user = await _userRepository.CreateAsync(new User { Email = encryptedEmail, Password = encryptedPassword, FirstName = firstName, LastName = lastName });
 
             if (user == null)
             {
-                return BadRequest(new { errorText = "Error while creating user." });
+                return Redirect($"{_configuration["ClientUrl"]}/confirm?success=false&message=User%20could%20not%20be%20created.");
             }
 
-            return await LogIn(new UserLogInModel { Email = user.Email, Password = user.Password });
+            var result = await LogIn(new UserLogInModel { Email = _cryptoService.Decrypt(user.Email), Password = _cryptoService.Decrypt(user.Password) });
+
+            var okResult = result as OkObjectResult;
+
+            if (okResult == null || okResult.Value == null || okResult.Value as LogInResponseModel == null)
+            {
+                return Redirect($"{_configuration["ClientUrl"]}/confirm?success=false&message=Failed%20during%20login%20user%20{_cryptoService.Decrypt(encryptedEmail)}");
+            }
+
+            return Redirect($"{_configuration["ClientUrl"]}/confirm?success=true&access_token={((LogInResponseModel)okResult.Value).access_token}&user_name={_cryptoService.Decrypt(encryptedEmail)}");
         }
 
         private async Task<ClaimsIdentity?> GetIdentity(UserLogInModel userLogIn)
