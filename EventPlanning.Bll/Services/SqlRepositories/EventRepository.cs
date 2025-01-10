@@ -30,7 +30,7 @@ namespace EventPlanning.Bll.Services.SqlRepositories
                 return null;
             }
 
-            _dbContext.Events.Remove(eventItem);
+            eventItem = _dbContext.Events.Remove(eventItem).Entity;
             await _dbContext.SaveChangesAsync();
 
             return eventItem;

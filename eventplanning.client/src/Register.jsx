@@ -72,7 +72,7 @@ const Register = () => {
                 <form onSubmit={handleSubmit}>
                     <h1>Register</h1>
                     <label>Email</label>
-                    <input required type="text" value={email} onChange={(e) => setEmail(e.target.value)}></input>
+                    <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)}></input>
                     <label>First Name</label>
                     <input required type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)}></input>
                     <label>Last Name</label>
