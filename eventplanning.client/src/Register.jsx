@@ -37,8 +37,6 @@ const Register = () => {
 
             setSending(false);
 
-            console.log(response)
-
             if(response.status === 200)
             {
               const body = await response.json();
