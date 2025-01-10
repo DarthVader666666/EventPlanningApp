@@ -9,7 +9,7 @@ namespace EventPlanning.Bll.Services.JsonRepositories
         private readonly IDocumentCollection<User> _userCollection;
         private readonly IDocumentCollection<UserRole> _userRoleCollection;
         private readonly CryptoService _cryptoService;
-        private int nextUserId;
+        private static int nextUserId;
 
         public UserJsonRepository(DataStore dataStore, CryptoService cryptoService)
         {
@@ -25,7 +25,7 @@ namespace EventPlanning.Bll.Services.JsonRepositories
         {
             item.UserId = nextUserId++;
             await _userCollection.InsertOneAsync(item);
-            await _userRoleCollection.InsertOneAsync(new UserRole { UserId = item.UserId, RoleId = 2 });
+            await _userRoleCollection.InsertOneAsync(new UserRole { UserId = item.UserId });
 
             return item;
         }

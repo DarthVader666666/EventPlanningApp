@@ -9,7 +9,7 @@ namespace EventPlanning.Bll.Services.JsonRepositories
         private readonly IDocumentCollection<Event> _eventCollection;
         private readonly IDocumentCollection<Theme> _themeCollection;
         private readonly IDocumentCollection<SubTheme> _subThemeCollection;
-        private int nextEventId;
+        private static int nextEventId;
 
         public EventJsonRepository(DataStore dataStore)
         {
