@@ -157,7 +157,7 @@ namespace EventPlanning.Api.Controllers
         [Route("api/[controller]/confirm")]
         public async Task<IActionResult> Confirm([FromQuery] int userId, [FromQuery] int eventId, [FromQuery] string encryptedEmail, [FromQuery] string access_token)
         {
-            var user = await _userRepository.GetAsync(encryptedEmail);
+            var user = await _userRepository.GetAsync(encryptedEmail.Replace(' ', '+'));
 
             if (user == null)
             {

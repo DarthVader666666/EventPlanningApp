@@ -42,7 +42,7 @@ namespace EventPlanning.Api.Controllers
         {
             var jwtToken = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
-            if (!string.IsNullOrEmpty(jwtToken))
+            if (!(string.IsNullOrEmpty(jwtToken) || jwtToken == "null"))
             {
                 var jwtSecurityToken = new JwtSecurityTokenHandler().ReadJwtToken(jwtToken);
                 var user_name = jwtSecurityToken?.Claims?.FirstOrDefault(x => x.Type.Contains("identity/claims/name"))?.Value;
@@ -62,7 +62,16 @@ namespace EventPlanning.Api.Controllers
                 });
             }
 
-            var identity = await GetIdentity(userLogIn);
+            ClaimsIdentity? identity = null;
+
+            try
+            {
+                identity = await GetIdentity(userLogIn);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { errorText = ex.Message });
+            }
 
             if (identity == null)
             {
