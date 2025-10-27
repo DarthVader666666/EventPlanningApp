@@ -140,7 +140,17 @@ namespace EventPlanning.Api.Controllers
         [Route("api/[controller]/confirm")]
         public async Task<IActionResult> Confirm([FromQuery] string encryptedEmail, [FromQuery] string encryptedPassword, [FromQuery] string firstName, [FromQuery] string lastName)
         {
-            var user = await _userRepository.CreateAsync(new User { Email = encryptedEmail, Password = encryptedPassword, FirstName = firstName, LastName = lastName });
+            encryptedEmail = encryptedEmail.Replace(' ', '+');
+            encryptedPassword = encryptedPassword.Replace(' ', '+');
+
+            var user = await _userRepository.CreateAsync(
+                new User 
+                { 
+                    Email = encryptedEmail, 
+                    Password = encryptedPassword, 
+                    FirstName = firstName, 
+                    LastName = lastName 
+                });
 
             if (user == null)
             {

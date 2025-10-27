@@ -29,7 +29,7 @@ namespace EventPlanning.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserId", "Email", "FirstName", "LastName", "Password" },
-                values: new object[] { 1, "htyfK1Yb17OD0B58K1JF3ENX/trqoSLEs/Ol0tOcXnU=", "Vadzim", "Rumiantsau", "3/Sxv99jIJErej2gCXkndw==" });
+                values: new object[] { 1, "umw6c2oUV7b1lWq3T2GH2djfP8CQBTIYHrFAvsXE7U8=", "Vadzim", "Rumiantsau", "efavXKTzRTFnR7w69A7OJA==" });
         }
 
         /// <inheritdoc />
