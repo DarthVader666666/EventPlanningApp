@@ -12,7 +12,6 @@ using Mapster;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddLogging(logs => 
 {
     logs.AddConsole();
@@ -50,8 +49,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 builder.Services.ConfigureAutomapper();
 builder.Services.AddScoped<CryptoService>();
 
-Directory.CreateDirectory("../DB");
-var connectionString = builder.Configuration["EventPlanningDb"];
+var dbDir = Path.Combine(builder.Environment.ContentRootPath, "DB");
+Directory.CreateDirectory(dbDir);
+var dbFile = builder.Configuration["EventPlanningDb"];
+var dbPath = Path.Combine(dbDir, dbFile);
+var connectionString = $"Data Source={dbPath}";
+
 builder.Services.AddDbContext<EventPlanningDbContext>(options => options.UseSqlite(connectionString));
 
 builder.Services.AddScoped<IRepository<Event>, EventRepository>();

@@ -13,12 +13,6 @@ namespace EventPlanning.Data
             _configuration = configuration;
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var connectionString = _configuration["EventPlanningDb"];
-            optionsBuilder.UseSqlite(connectionString);
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>(user => 
