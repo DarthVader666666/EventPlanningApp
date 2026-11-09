@@ -1,9 +1,11 @@
-using AutoMapper;
 using Azure.Communication.Email;
 using EventPlanning.Api.Models;
 using EventPlanning.Bll.Interfaces;
 using EventPlanning.Bll.Services;
 using EventPlanning.Data.Entities;
+
+using MapsterMapper;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;

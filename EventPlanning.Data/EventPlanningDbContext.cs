@@ -15,7 +15,8 @@ namespace EventPlanning.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(_configuration["ConnectionStrings:EventDb"]);
+            var connectionString = _configuration["EventPlanningDb"];
+            optionsBuilder.UseSqlite(connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

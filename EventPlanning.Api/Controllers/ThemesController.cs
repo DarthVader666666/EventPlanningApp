@@ -1,9 +1,10 @@
-﻿using AutoMapper;
-using EventPlanning.Bll.Interfaces;
+﻿using EventPlanning.Bll.Interfaces;
 using EventPlanning.Data.Entities;
 using EventPlanning.Api.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+
+using MapsterMapper;
 
 namespace EventPlanning.Api.Controllers
 {

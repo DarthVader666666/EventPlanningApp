@@ -484,5 +484,10 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 
-# Json Database
-EventDbJson/
+# Sqllite Database
+DB/
+*.db*
+
+# Cert files
+*.key
+*.pem

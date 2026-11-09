@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using EventPlanning.Bll.Interfaces;
+﻿using EventPlanning.Bll.Interfaces;
 using EventPlanning.Data.Entities;
 using EventPlanning.Api.Models;
 using Microsoft.AspNetCore.Cors;
@@ -19,18 +18,16 @@ namespace EventPlanning.Api.Controllers
     {
         private readonly IRepository<User> _userRepository;
         private readonly IRepository<Role> _roleRepository;
-        private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly CryptoService _cryptoService;
         private readonly EmailSender _emailSender;
 
         public AuthorizationController(
-            IRepository<User> userRepository, IRepository<Role> roleRepository, IMapper mapper, 
+            IRepository<User> userRepository, IRepository<Role> roleRepository,
             IConfiguration configuration, CryptoService cryptoService, EmailSender emailSender)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
-            _mapper = mapper;
             _configuration = configuration;
             _cryptoService = cryptoService;
             _emailSender = emailSender;
